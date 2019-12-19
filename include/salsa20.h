@@ -1,7 +1,7 @@
 /**
- * @file:	salsa20.h
- * @author:	А.В. Федченко
- * @date	2019.12.18
+ * @file:   salsa20.h
+ * @author: А.В. Федченко
+ * @date    2019.12.18
  */
 
 #ifndef SALSA20_H

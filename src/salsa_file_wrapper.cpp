@@ -1,7 +1,7 @@
 /**
- * @file:	salsa_file_wrapper.cpp
- * @author:	А.В. Федченко
- * @date	2019.12.19
+ * @file:   salsa_file_wrapper.cpp
+ * @author: А.В. Федченко
+ * @date    2019.12.19
  */
 
 #include <fstream>
@@ -10,8 +10,8 @@
 
 #include "salsa_file_wrapper.h"
 
-salsa_file_wrapper::salsa_file_wrapper(){}
-salsa_file_wrapper::~salsa_file_wrapper(){}
+salsa_file_wrapper::salsa_file_wrapper() {}
+salsa_file_wrapper::~salsa_file_wrapper() {}
 
 void salsa_file_wrapper::set_key_and_nonce(const std::string &key, const std::string &nonce)
 {
@@ -55,7 +55,7 @@ void salsa_file_wrapper::crypt_file(const std::string &in_file_name, const std::
         // copy encrypt data to out file
         if (input_file.good())
         {
-            for (const auto &v:crypt)
+            for (const auto &v : crypt)
                 out_file.put(static_cast<char>(v));
         }
         else

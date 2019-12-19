@@ -1,7 +1,7 @@
 /**
- * @file:	salsa_file_wrapper.h
- * @author:	А.В. Федченко
- * @date	2019.12.19
+ * @file:   salsa_file_wrapper.h
+ * @author: А.В. Федченко
+ * @date    2019.12.19
  */
 
 #ifndef SALSA_FILE_WRAPPER_H

@@ -43,12 +43,9 @@ salsa20::salsa20(const std::string &key, const std::string &nonce)
     m_array[13] = convert(&key_array[24]);
     m_array[14] = convert(&key_array[28]);
     m_array[15] = convert(&constants[12]);
-
-
-
 }
 
-salsa20::~salsa20(){}
+salsa20::~salsa20() {}
 
 void salsa20::begin_crypt()
 {
@@ -124,6 +121,7 @@ salsa20::block_array salsa20::generate_keystream()
     }
 
     auto position = reinterpret_cast<uint64_t *>(&m_array[8]);
+
     // ++*position - beeeee
     *position = *position + 1;
 
