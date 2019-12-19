@@ -18,16 +18,33 @@
 #include <memory>
 
 class salsa20;
+
+/**
+ * @brief The salsa_file_wrapper class provides api to encrypt file
+ */
 class salsa_file_wrapper
 {
 public:
     salsa_file_wrapper();
     ~salsa_file_wrapper();
 
+    /**
+     * @brief set_key_and_nonce initialize new chiper
+     * @param key
+     * @param nonce
+     */
     void set_key_and_nonce(const std::string &key, const std::string &nonce);
+
+    /**
+     * @brief crypt_file encrypt input file to output file
+     * @param in_file
+     * @param out_file
+     */
     void crypt_file(const std::string &in_file, const std::string &out_file);
 
 private:
+
+    ///< chiper
     std::unique_ptr<salsa20> m_cryptoman;
 };
 

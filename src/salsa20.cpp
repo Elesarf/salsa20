@@ -18,23 +18,19 @@
 // some need strong constants, but not me.
 constexpr uint8_t constants[] = "quack constant!!";
 
-/*
- * key_array structure:
- * [cons, key, key, key, cons,
- *  nonce, nonce, pos, pos
- *  cons, key, key, key, cons]
- *
- */
-
-salsa20::salsa20(const std::string &key)
+salsa20::salsa20(const std::string &key, const std::string &nonce)
 {
     /* if key size is not same sizes::key_size
      * copy part of key, or all key bytes and fill other by 0x0
      */
     std::array<uint8_t, sizes::key_size> key_array;
     key_array.fill(0x0);
-
     std::copy(key.begin(), key.begin() + key_array.size(), key_array.data());
+
+    std::array<uint8_t, sizes::nonce_size> nonce_array;
+    nonce_array.fill(0x0);
+    std::copy(nonce.begin(), nonce.begin() + nonce_array.size(), nonce_array.data());
+
     m_array.fill(0x0);
 
     // initial state of array
@@ -45,27 +41,21 @@ salsa20::salsa20(const std::string &key)
     m_array[4] = convert(&key_array[12]);
     m_array[5] = convert(&constants[4]);
 
+    m_array[6] = convert(&nonce_array[0]);
+    m_array[7] = convert(&nonce_array[sizeof (uint32_t)]);
+
     m_array[10] = convert(&constants[8]);
     m_array[11] = convert(&key_array[16]);
     m_array[12] = convert(&key_array[20]);
     m_array[13] = convert(&key_array[24]);
     m_array[14] = convert(&key_array[28]);
     m_array[15] = convert(&constants[12]);
+
+
+
 }
 
 salsa20::~salsa20(){}
-
-void salsa20::set_nonce(const std::string &nonce)
-{
-    // set non value
-    std::array<uint8_t, sizes::nonce_value> nonce_array;
-    nonce_array.fill(0x0);
-
-    std::copy(nonce.begin(), nonce.begin() + nonce_array.size(), nonce_array.data());
-
-    m_array[6] = convert(&nonce_array[0]);
-    m_array[7] = convert(&nonce_array[sizeof (uint32_t)]);
-}
 
 void salsa20::begin_crypt()
 {
@@ -73,7 +63,7 @@ void salsa20::begin_crypt()
     m_array[9] = 0;
 }
 
-void salsa20::print_vector() const
+void salsa20::print_key_array() const
 {
     for (const auto &v : m_array)
         std::cout << v << " ";
@@ -130,7 +120,7 @@ salsa20::block_array salsa20::generate_keystream()
     std::array<uint8_t, sizes::block_size> result;
     result.fill(0x0);
 
-    for (size_t i = 0; i < sizes::vector_size; ++i)
+    for (size_t i = 0; i < sizes::key_array_size; ++i)
     {
         x[i] += m_array[i];
 
