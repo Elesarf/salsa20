@@ -35,14 +35,15 @@ void salsa_file_wrapper::crypt_file(const std::string &in_file_name, const std::
     if (!input_file.is_open())
         throw std::runtime_error("input file not open");
 
-    input_file.seekg (0, std::ios::end);
-    long file_length = input_file.tellg();
-    input_file.seekg (0, std::ios::beg);
-
     std::ofstream out_file(out_file_name);
     if (!out_file.is_open())
         throw std::runtime_error("output file not open");
 
+    m_cryptoman->begin_crypt();
+
+    input_file.seekg (0, std::ios::end);
+    long file_length = input_file.tellg();
+    input_file.seekg (0, std::ios::beg);
 
     salsa20::block_array file_block;
     auto tail_size = static_cast<uint32_t>(file_length) % file_block.size();
