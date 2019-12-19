@@ -128,7 +128,6 @@ salsa20::block_array salsa20::generate_keystream()
     return result;
 }
 
-
 std::array<uint8_t, sizeof (uint32_t)> salsa20::convert(const uint32_t value)
 {
     return
