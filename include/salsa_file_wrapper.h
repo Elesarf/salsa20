@@ -33,7 +33,7 @@ public:
      * @param in_file
      * @param out_file
      */
-    void crypt_file(const std::string &in_file, const std::string &out_file);
+    void crypt_file(const std::string &in_file, const std::string &out_file, bool print_process = false);
 
 private:
 

@@ -10,7 +10,7 @@ int main(int argc, char **argv)
 
     salsa_file_wrapper sfw;
     sfw.set_key_and_nonce(key, none);
-    sfw.crypt_file("./test_file", "./result");
+    sfw.crypt_file("./yr.gz", "./result.gz", true);
 
     return 0;
 }

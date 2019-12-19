@@ -74,7 +74,7 @@ private:
      * @param value
      * @return
      */
-    std::array<uint8_t, sizeof (uint32_t)> convert(const uint32_t value);
+    std::array<uint8_t, sizeof (uint32_t)> convert(const uint32_t value) const;
 
     /**
      * @brief rotate rotate value around bit number
@@ -82,13 +82,13 @@ private:
      * @param number_of_bits
      * @return
      */
-    uint32_t rotate(const uint32_t value, const uint32_t number_of_bits);
+    uint32_t rotate(const uint32_t value, const uint32_t number_of_bits) const;
 
     /**
      * @brief convert array of 8 bit values to 32 bit number
      * @return
      */
-    uint32_t convert(const uint8_t *);
+    uint32_t convert(const uint8_t *) const;
 
 private:
 

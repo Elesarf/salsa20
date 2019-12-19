@@ -64,7 +64,7 @@ salsa20::block_array salsa20::generate_keystream()
 {
     auto x = m_array;
 
-    for (size_t i = 20; i > 0; i -= 2)
+    for (size_t i = 20; i > 0; --i)
     {
         x[4 ] ^= rotate(static_cast<uint32_t>(x[0 ] + x[12]), 7);
         x[8 ] ^= rotate(static_cast<uint32_t>(x[4 ] + x[0 ]), 9);
@@ -128,7 +128,7 @@ salsa20::block_array salsa20::generate_keystream()
     return result;
 }
 
-std::array<uint8_t, sizeof (uint32_t)> salsa20::convert(const uint32_t value)
+std::array<uint8_t, sizeof (uint32_t)> salsa20::convert(const uint32_t value) const
 {
     return
     {
@@ -152,12 +152,12 @@ salsa20::block_array salsa20::process_block(const salsa20::block_array &input_ar
     return crypt_block;
 }
 
-uint32_t salsa20::rotate(const uint32_t value, const uint32_t number_of_bits)
+uint32_t salsa20::rotate(const uint32_t value, const uint32_t number_of_bits) const
 {
     return (value << number_of_bits) | (value >> (sizeof (uint32_t) - number_of_bits));
 }
 
-uint32_t salsa20::convert(const uint8_t *array_to_convert)
+uint32_t salsa20::convert(const uint8_t *array_to_convert) const
 {
     return ((static_cast<uint32_t>(array_to_convert[0]) << 0) |
             (static_cast<uint32_t>(array_to_convert[1]) << 8) |
