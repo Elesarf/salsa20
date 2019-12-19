@@ -1,5 +1,3 @@
-#include <iostream>
-#include <fstream>
 #include "salsa_file_wrapper.h"
 
 int main(int argc, char** argv)
