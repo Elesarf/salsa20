@@ -69,7 +69,7 @@ void salsa_file_wrapper::crypt_file(const std::string &in_file_name, const std::
                 out_file.put(static_cast<char>(crypt.at(i)));
 
             if (print_process)
-                std::cout << std::endl;
+                std::cout << "\rfinish" << std::string(50, ' ');
         }
 
     }
