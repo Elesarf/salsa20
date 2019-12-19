@@ -5,6 +5,8 @@
  */
 
 #include <fstream>
+#include <iomanip>
+#include <iostream>
 
 #include "salsa20.h"
 
@@ -18,7 +20,7 @@ void salsa_file_wrapper::set_key_and_nonce(const std::string &key, const std::st
     m_cryptoman = std::make_unique<salsa20>(key, nonce);
 }
 
-void salsa_file_wrapper::crypt_file(const std::string &in_file_name, const std::string &out_file_name)
+void salsa_file_wrapper::crypt_file(const std::string &in_file_name, const std::string &out_file_name, bool print_process)
 {
     if (!m_cryptoman)
         throw std::runtime_error("create crypter firstly");
@@ -57,12 +59,19 @@ void salsa_file_wrapper::crypt_file(const std::string &in_file_name, const std::
         {
             for (const auto &v : crypt)
                 out_file.put(static_cast<char>(v));
+
+            if (print_process)
+                std::cout << "\r" << "progress: " << input_file.tellg() << " / " << file_length;
         }
         else
         {
             for (size_t i = 0; i < tail_size; ++i)
                 out_file.put(static_cast<char>(crypt.at(i)));
+
+            if (print_process)
+                std::cout << std::endl;
         }
+
     }
 
     // close files
