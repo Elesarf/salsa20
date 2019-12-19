@@ -18,10 +18,12 @@ salsa20::salsa20(const std::string &key, const std::string &nonce)
      */
     std::array<uint8_t, sizes::key_size> key_array;
     key_array.fill(0x0);
-    std::copy(key.begin(), key.begin() + key_array.size(), key_array.data());
+    long minimal_size = sizes::key_size < key.length() ? sizes::key_size : static_cast<long>(key.length());
+    std::copy(key.begin(), key.begin() + minimal_size, key_array.data());
 
     std::array<uint8_t, sizes::nonce_size> nonce_array;
     nonce_array.fill(0x0);
+    minimal_size = sizes::nonce_size < nonce.length() ? sizes::key_size : static_cast<long>(nonce.length());
     std::copy(nonce.begin(), nonce.begin() + nonce_array.size(), nonce_array.data());
 
     m_array.fill(0x0);
