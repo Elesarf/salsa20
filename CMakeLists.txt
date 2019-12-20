@@ -1,5 +1,5 @@
 # Check minimum required CMake version
-cmake_minimum_required(VERSION 3.7)
+cmake_minimum_required(VERSION 3.9)
 
 project("salsa")
 
@@ -14,10 +14,21 @@ set(HEADERS
     include/salsa_file_wrapper.h
     )
 
-add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS})
+set(QML_SOURCES
+    qml/main.qml
+    )
+
+find_package(Qt5 COMPONENTS Core Qml Quick REQUIRED)
+qt5_add_resources(QT_RESOURCES qml/qml_resources.qrc)
+
+add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS} ${QML_SOURCES} ${QT_RESOURCES})
+
+target_compile_definitions(${PROJECT_NAME} PRIVATE ${QtQml_DEFINITIONS} ${Qt5Quick_DEFINITIONS} ${${Qt5Quick_DEFINITIONS}})
+
+set_target_properties(${PROJECT_NAME} PROPERTIES CMAKE_AUTOMOC ON)
 
 set_target_properties(${PROJECT_NAME} PROPERTIES CMAKE_CXX_STANDARD 14)
-set_target_properties(${PROJECT_NAME} PROPERTIES CMAKE_CXX_EXTENSIONS ON)
+set_target_properties(${PROJECT_NAME} PROPERTIES CMAKE_CXX_EXTENSIONS OFF)
 set_target_properties(${PROJECT_NAME} PROPERTIES CMAKE_CXX_STANDARD_REQUIRED ON)
 
 target_compile_options(
@@ -27,4 +38,14 @@ target_compile_options(
     PUBLIC -Werror
     )
 
+target_link_libraries(
+    ${PROJECT_NAME}
+    Qt5::Core
+    Qt5::Qml
+    Qt5::Quick
+    )
+
+target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_14)
+
 target_include_directories(${PROJECT_NAME} PUBLIC ./include)
+target_include_directories(${PROJECT_NAME} PRIVATE ${QtQml_INCLUDE_DIRECTORY})
