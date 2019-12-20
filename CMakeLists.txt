@@ -16,6 +16,7 @@ set(HEADERS
 
 set(QML_SOURCES
     qml/main.qml
+    qml/PasswordDelegate.qml
     )
 
 find_package(Qt5 COMPONENTS Core Qml Quick REQUIRED)
@@ -23,7 +24,7 @@ qt5_add_resources(QT_RESOURCES qml/qml_resources.qrc)
 
 add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS} ${QML_SOURCES} ${QT_RESOURCES})
 
-target_compile_definitions(${PROJECT_NAME} PRIVATE ${QtQml_DEFINITIONS} ${Qt5Quick_DEFINITIONS} ${${Qt5Quick_DEFINITIONS}})
+target_compile_definitions(${PROJECT_NAME} PRIVATE ${QtQml_DEFINITIONS})
 
 set_target_properties(${PROJECT_NAME} PROPERTIES CMAKE_AUTOMOC ON)
 set_target_properties(${PROJECT_NAME} PROPERTIES CMAKE_CXX_STANDARD 14)

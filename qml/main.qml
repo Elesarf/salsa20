@@ -10,4 +10,12 @@ ApplicationWindow {
     minimumWidth: 320
     minimumHeight: 240
     title: qsTr("tracking JSON pleer")
+
+    color: "grey"
+
+    PasswordDelegate{
+        anchors.centerIn: parent
+        width: 320
+        height: 40
+    }
 }
