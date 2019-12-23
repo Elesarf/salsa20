@@ -6,11 +6,17 @@ project("salsa")
 set(SOURCES
     src/main.cpp
     src/salsa20.cpp
+    src/view_model.cpp
+    src/data_model.cpp
+    src/json_parser.cpp
     src/salsa_file_wrapper.cpp
     )
 
 set(HEADERS
     include/salsa20.h
+    include/data_model.h
+    include/view_model.h
+    include/json_parser.h
     include/salsa_file_wrapper.h
     )
 
@@ -26,9 +32,12 @@ add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS} ${QML_SOURCES} ${QT_RESOURC
 
 target_compile_definitions(${PROJECT_NAME} PRIVATE ${QtQml_DEFINITIONS})
 
-set_target_properties(${PROJECT_NAME} PROPERTIES CMAKE_AUTOMOC ON)
+set_target_properties(${PROJECT_NAME} PROPERTIES AUTOMOC ON)
+set_target_properties(${PROJECT_NAME} PROPERTIES AUTOUIC ON)
+set_target_properties(${PROJECT_NAME} PROPERTIES AUTOMOC ON)
 set_target_properties(${PROJECT_NAME} PROPERTIES CMAKE_CXX_STANDARD 14)
 set_target_properties(${PROJECT_NAME} PROPERTIES CMAKE_CXX_EXTENSIONS OFF)
+set_target_properties(${PROJECT_NAME} PROPERTIES CMAKE_INCLUDE_CURRENT_DIR ON)
 set_target_properties(${PROJECT_NAME} PROPERTIES CMAKE_CXX_STANDARD_REQUIRED ON)
 
 target_compile_options(

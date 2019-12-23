@@ -16,6 +16,6 @@ ApplicationWindow {
     PasswordDelegate{
         anchors.centerIn: parent
         width: 320
-        height: 40
+        height: 80
     }
 }

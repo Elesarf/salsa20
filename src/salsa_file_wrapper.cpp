@@ -15,9 +15,11 @@
 salsa_file_wrapper::salsa_file_wrapper() {}
 salsa_file_wrapper::~salsa_file_wrapper() {}
 
-void salsa_file_wrapper::set_key_and_nonce(const std::string &key, const std::string &nonce)
+constexpr char c_nonce[] = "99990001";
+
+void salsa_file_wrapper::set_key_and_nonce(const std::string &key)
 {
-    m_cryptoman = std::make_unique<salsa20>(key, nonce);
+    m_cryptoman = std::make_unique<salsa20>(key, c_nonce);
 }
 
 void salsa_file_wrapper::crypt_file(const std::string &in_file_name, const std::string &out_file_name, bool print_process)

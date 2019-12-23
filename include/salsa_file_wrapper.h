@@ -26,7 +26,7 @@ public:
      * @param key
      * @param nonce
      */
-    void set_key_and_nonce(const std::string &key, const std::string &nonce);
+    void set_key_and_nonce(const std::string &key);
 
     /**
      * @brief crypt_file encrypt input file to output file
