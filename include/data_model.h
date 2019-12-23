@@ -17,40 +17,85 @@
 #include <QObject>
 #include <QJsonObject>
 #include <QVariantMap>
+#include <QAbstractListModel>
 
-struct data_model
+class card_type : public QObject
 {
-    Q_GADGET
+    Q_OBJECT
 public:
-    data_model();
-    data_model(const QString&, const QString&, const QString&);
-    data_model(const QVariantMap &);
-    data_model(const QJsonObject &);
+    Q_PROPERTY(QString name READ name WRITE setName NOTIFY nameChanged)
+    Q_PROPERTY(QString login READ login WRITE setLogin NOTIFY loginChanged)
+    Q_PROPERTY(QString pass READ pass WRITE setPass NOTIFY passChanged)
 
-    data_model(const data_model&);
-    data_model &operator=(const data_model&);
+    card_type();
+    card_type(const QString&, const QString&, const QString&);
+    card_type(const QVariantMap &);
+    card_type(const QJsonObject &);
 
-    ~data_model();
+    card_type(const card_type&);
+    card_type &operator=(const card_type&);
+
+    ~card_type();
 
     QVariantMap toVariant() const;
     QJsonObject toJSONObject() const;
 
     QString name() const;
     QString login() const;
-    QString password() const;
+    QString pass() const;
 
     void setName(QString name);
     void setLogin(QString login);
-    void setPassword(QString password);
+
+public slots:
+    void setPass(QString pass);
+
+signals:
+    void nameChanged(QString name);
+    void loginChanged(QString login);
+    void passChanged(QString pass);
 
 private:
     QString m_name;
     QString m_login;
-    QString m_password;
+    QString m_pass;
 };
+
+class card_model: public QAbstractListModel
+{
+    Q_OBJECT
+
+public:
+    Q_PROPERTY(int count READ count NOTIFY countChanged)
+
+    explicit card_model(QObject *parent = nullptr);
+    ~card_model() override;
+
+    enum logMessageRoles{
+        CardName = Qt::UserRole + 1,
+        Login,
+        Password
+    };
+
+    int rowCount(const QModelIndex &parent) const override;
+    QVariant data(const QModelIndex &index, int role) const override;
+    QHash<int, QByteArray> roleNames() const override;
+
+    Q_INVOKABLE void add(const card_type&);
+    Q_INVOKABLE QList<card_type> rawData() const;
+
+    int count() const;
+
+signals:
+    void countChanged(int count);
+
+private:
+    QList<card_type> m_data;
+};
+
 
 // регистрация для Qt
 #include <qmetatype.h>
-Q_DECLARE_METATYPE(data_model);
+Q_DECLARE_METATYPE(card_type);
 
 #endif // DATA_MODEL_H

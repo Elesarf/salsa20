@@ -1,20 +1,18 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 
-#include <json_parser.h>
-#include <data_model.h>
+#include "data_model.h"
+
+#include "view_model.h"
 
 int main(int argc, char **argv)
 {
     QGuiApplication app(argc, argv);
     QQmlApplicationEngine engine;
 
-    QList<data_model> l;
-    l.append(data_model("one", "some", "somePassword"));
-    l.append(data_model("two", "some", "somePassword"));
-    l.append(data_model("tree", "some", "somePassword"));
-
-    json_parser::save("./data.json", l);
+    qmlRegisterType<card_type>("com.ass.crypter", 1, 0, "CardType");
+    qmlRegisterType<card_model>("com.ass.crypter", 1, 0, "CardModel");
+    qmlRegisterType<view_model>("com.ass.crypter", 1, 0, "ViewModel");
 
     engine.load(QUrl("qrc:/main.qml"));
 

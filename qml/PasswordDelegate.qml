@@ -1,11 +1,10 @@
 import QtQuick 2.0
 
 Item {
-
-    property string name: "name"
-    property string login: "login"
-    property string value: "value"
-    property bool showPassword: true
+    property string name: ""
+    property string login: ""
+    property string password: ""
+    property bool showPassword: false
 
     Rectangle{
         id: background
@@ -41,7 +40,7 @@ Item {
 
     Text {
         id: loginText
-        text: showPassword ? login : hideString(name)
+        text: showPassword ? login : hideString(login)
         height: parent.height / 2.0
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
@@ -66,7 +65,7 @@ Item {
 
     Text {
         id: valueText
-        text: showPassword ? value : hideString(value)
+        text: showPassword ? password : hideString(password)
         height: parent.height / 2.0
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
