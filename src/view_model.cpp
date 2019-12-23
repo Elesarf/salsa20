@@ -24,15 +24,6 @@ view_model::view_model(QObject *parent) : QObject(parent),
     m_readyToWork(false)
 {
     m_cardModel = new card_model(this);
-
-//    m_cardModel->add({"one","some","somePass"});
-//    m_cardModel->add({"two","some","somePass"});
-//    m_cardModel->add({"three","some","somePass"});
-//    json_parser::save("./data.json", m_cardModel->rawData());
-
-//    auto card_list = json_parser::load("./data.json");
-//    for (const auto &c:card_list)
-//        m_cardModel->add(c);
 }
 
 view_model::~view_model(){}
@@ -53,6 +44,8 @@ void view_model::loadFile()
         return;
 
     auto card_list = json_parser::load("./data.json", m_salsa);
+
+    m_cardModel->clear();
     for (const auto &c:card_list)
         m_cardModel->add(c);
 }
@@ -77,9 +70,8 @@ QString view_model::fileName() const
 
 void view_model::setMasterPassword(QString masterPassword)
 {
-//    if (m_masterPassword == masterPassword)
-//        return;
-
+    if (m_masterPassword == masterPassword)
+        return;
 
     m_masterPassword = masterPassword;
 

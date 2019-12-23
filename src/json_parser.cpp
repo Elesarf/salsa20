@@ -23,6 +23,8 @@
 
 #include "json_parser.h"
 
+#include <fstream>
+
 QList<card_type> json_parser::load(const QString &file_name, std::shared_ptr<salsa20> salsa)
 {
     QByteArray file_buffer;
@@ -38,40 +40,40 @@ QList<card_type> json_parser::load(const QString &file_name, std::shared_ptr<sal
     else
     {
         salsa->begin_crypt();
-        salsa20::block_array block_buffer;
-        quint32 byte_counter = 0;
-        QByteArray encrypt_file_buffer;
+        std::ifstream input_file(file_name.toStdString());
+        salsa20::block_array file_block;
+        QByteArray ba;
+        input_file.seekg (0, std::ios::end);
+        uint32_t file_length = static_cast<uint32_t>(input_file.tellg());
+        auto tail_size = file_length % file_block.size();
+        input_file.seekg (0, std::ios::beg);
 
-        file_buffer = jsFile.readAll();
-
-        for (qint32 i = 0; i < file_buffer.size(); ++i)
+        while (input_file.good())
         {
-            if (byte_counter != block_buffer.size() - 1)
+            // clear block buffer
+            file_block.fill(0x0);
+
+            // read next data block
+            input_file.read(reinterpret_cast<char *>(&file_block[0]), file_block.size());
+
+            // encrypt block
+            auto crypt = salsa->process_block(file_block);
+
+            // copy encrypt data to out file
+            if (input_file.good())
             {
-                block_buffer[byte_counter] = static_cast<quint8>(file_buffer.at(i));
-                ++byte_counter;
+                for (const auto &v : crypt)
+                    ba.append(static_cast<char>(v));
+
             }
             else
             {
-                auto encrypt_block = salsa->process_block(block_buffer);
-
-                for (quint32 j = 0; j < byte_counter; ++j)
-                    encrypt_file_buffer.append(static_cast<char>(encrypt_block.at(j)));
-
-                block_buffer.fill(0x0);
-                byte_counter = 0;
+                for (size_t i = 0; i < tail_size; ++i)
+                    ba.append(static_cast<char>(crypt.at(i)));
             }
         }
 
-        if (byte_counter != 0)
-        {
-            auto encrypt_block = salsa->process_block(block_buffer);
-
-            for (quint32 j = 0; j < byte_counter; ++j)
-                encrypt_file_buffer.append(static_cast<char>(encrypt_block.at(j)));
-        }
-
-        file_buffer = encrypt_file_buffer;
+        file_buffer = ba;
     }
 
     QJsonDocument jsDoc = QJsonDocument::fromJson(file_buffer);

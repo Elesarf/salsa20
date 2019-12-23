@@ -82,6 +82,7 @@ public:
     QHash<int, QByteArray> roleNames() const override;
 
     Q_INVOKABLE void add(const card_type&);
+    Q_INVOKABLE void clear();
     Q_INVOKABLE QList<card_type> rawData() const;
 
     int count() const;

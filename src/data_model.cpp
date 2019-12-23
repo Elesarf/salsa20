@@ -169,6 +169,13 @@ void card_model::add(const card_type &card)
     emit countChanged(m_data.size());
 }
 
+void card_model::clear()
+{
+    beginResetModel();
+    m_data.clear();
+    endResetModel();
+}
+
 QList<card_type> card_model::rawData() const
 {
     return m_data;
