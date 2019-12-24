@@ -1,7 +1,7 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 
-#include "data_model.h"
+#include "data_model_controller.h"
 
 #include "view_model.h"
 
@@ -10,8 +10,7 @@ int main(int argc, char **argv)
     QGuiApplication app(argc, argv);
     QQmlApplicationEngine engine;
 
-    qmlRegisterType<card_type>("com.ass.crypter", 1, 0, "CardType");
-    qmlRegisterType<card_model>("com.ass.crypter", 1, 0, "CardModel");
+    qmlRegisterType<data_model_controller>("com.ass.crypter", 1, 0, "CardController");
     qmlRegisterType<view_model>("com.ass.crypter", 1, 0, "ViewModel");
 
     engine.load(QUrl("qrc:/main.qml"));

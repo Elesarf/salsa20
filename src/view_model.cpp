@@ -11,9 +11,11 @@
  * @date	2019.12.23
  */
 
+#include <QStandardPaths>
+
 #include "salsa20.h"
 #include "json_parser.h"
-#include "data_model.h"
+#include "data_model_controller.h"
 
 #include "view_model.h"
 
@@ -23,7 +25,7 @@ view_model::view_model(QObject *parent) : QObject(parent),
     m_masterPassword(""),
     m_readyToWork(false)
 {
-    m_cardModel = new card_model(this);
+    m_cardModel = new data_model_controller(this);
 }
 
 view_model::~view_model(){}
@@ -38,27 +40,23 @@ bool view_model::readyToWork() const
     return m_readyToWork;
 }
 
-void view_model::loadFile()
+void view_model::save()
 {
     if (m_masterPassword.isEmpty())
         return;
 
-    auto card_list = json_parser::load("./data.json", m_salsa);
-
-    m_cardModel->clear();
-    for (const auto &c:card_list)
-        m_cardModel->add(c);
+    m_cardModel->save(m_salsa.get());
 }
 
-void view_model::saveFile()
+void view_model::load()
 {
     if (m_masterPassword.isEmpty())
         return;
 
-    json_parser::save("./data.json", m_cardModel->rawData(), m_salsa);
+    m_cardModel->load(m_salsa.get());
 }
 
-card_model *view_model::cardModel() const
+data_model_controller *view_model::cardController()
 {
     return m_cardModel;
 }
@@ -96,13 +94,4 @@ void view_model::setFileName(QString fileName)
 
     m_fileName = fileName;
     emit fileNameChanged(m_fileName);
-}
-
-void view_model::setCardModel(card_model *cardModel)
-{
-    if (m_cardModel == cardModel)
-        return;
-
-    m_cardModel = cardModel;
-    emit cardModelChanged(m_cardModel);
 }

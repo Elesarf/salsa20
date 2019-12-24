@@ -19,6 +19,7 @@ ApplicationWindow {
     }
 
     ListView{
+        id: cardList
         anchors.centerIn: parent
         width: 420
         height: 460
@@ -31,7 +32,7 @@ ApplicationWindow {
             border.color: "blue"
         }
 
-        model: viewModel.cardModel
+        model: viewModel.cardController.modelData
         delegate: PasswordDelegate{
             width: parent.width
             height: 80
@@ -39,7 +40,36 @@ ApplicationWindow {
             name: cardName
             login: cardLogin
             password: cardPassword
+
+            onRemoveThis: cardList.model.removeRows(index, 1)
+            Component.onCompleted: console.log(index)
         }
+
+        footer: Rectangle{
+            width: parent.width
+            height: 40
+
+            Image {
+                id: addIcon
+                source: "qrc:/media/add_circle_outline-24px.svg"
+
+                anchors.horizontalCenter: parent.horizontalCenter
+                anchors.verticalCenter: parent.verticalCenter
+
+                fillMode: Image.Pad
+            }
+
+            border.width: 2
+            border.color: "blue"
+
+            MouseArea{
+                anchors.fill: parent
+
+                onClicked: cardList.model.add()
+            }
+        }
+
+        footerPositioning: ListView.OverlayFooter
     }
 
     Button{
@@ -47,7 +77,7 @@ ApplicationWindow {
         text: qsTr("save")
         anchors.bottom: parent.bottom
 
-        onClicked: viewModel.saveFile()
+        onClicked: viewModel.save()
     }
 
     Button{
@@ -57,7 +87,7 @@ ApplicationWindow {
         anchors.left: saveButton.right
         anchors.leftMargin: 4
 
-        onClicked: viewModel.loadFile()
+        onClicked: viewModel.load()
     }
 
     Button{

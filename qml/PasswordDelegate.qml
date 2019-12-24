@@ -5,6 +5,9 @@ Item {
     property string login: ""
     property string password: ""
     property bool showPassword: false
+    property bool editMode: false
+
+    signal removeThis
 
     Rectangle{
         id: background
@@ -35,6 +38,23 @@ Item {
             verticalAlignment: Text.AlignVCenter
             anchors.verticalCenter: parent.verticalCenter
             anchors.horizontalCenter: parent.horizontalCenter
+        }
+
+        Image {
+            id: removeButton
+            source: "qrc:/media/remove_circle_outline-24px.svg"
+            fillMode: Image.Pad
+
+            anchors.verticalCenter: parent.verticalCenter
+            anchors.right: parent.right
+            anchors.rightMargin: 4
+
+            MouseArea{
+                anchors.fill: parent
+
+                onClicked: removeThis()
+
+            }
         }
     }
 

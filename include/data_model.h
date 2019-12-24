@@ -19,57 +19,61 @@
 #include <QVariantMap>
 #include <QAbstractListModel>
 
-class card_type : public QObject
-{
-    Q_OBJECT
-public:
-    Q_PROPERTY(QString name READ name WRITE setName NOTIFY nameChanged)
-    Q_PROPERTY(QString login READ login WRITE setLogin NOTIFY loginChanged)
-    Q_PROPERTY(QString pass READ pass WRITE setPass NOTIFY passChanged)
-
-    card_type();
-    card_type(const QString&, const QString&, const QString&);
-    card_type(const QVariantMap &);
-    card_type(const QJsonObject &);
-
-    card_type(const card_type&);
-    card_type &operator=(const card_type&);
-
-    ~card_type();
-
-    QVariantMap toVariant() const;
-    QJsonObject toJSONObject() const;
-
-    QString name() const;
-    QString login() const;
-    QString pass() const;
-
-    void setName(QString name);
-    void setLogin(QString login);
-
-public slots:
-    void setPass(QString pass);
-
-signals:
-    void nameChanged(QString name);
-    void loginChanged(QString login);
-    void passChanged(QString pass);
-
-private:
-    QString m_name;
-    QString m_login;
-    QString m_pass;
-};
-
 class card_model: public QAbstractListModel
 {
     Q_OBJECT
 
 public:
-    Q_PROPERTY(int count READ count NOTIFY countChanged)
+
+    struct card_type
+    {
+        card_type(){}
+        card_type(const QString &_name, const QString &_login, const QString &_pass) :
+            name(_name),
+            login(_login),
+            pass(_pass)
+        {}
+
+        card_type(const QVariantMap &v_map) :
+            name(v_map["name"].toString()),
+            login(v_map["login"].toString()),
+            pass(v_map["pass"].toString())
+        {}
+
+        card_type(const QJsonObject &j_obj) :
+            name(j_obj.value("name").toString()),
+            login(j_obj.value("login").toString()),
+            pass(j_obj.value("pass").toString())
+        {}
+
+        QVariantMap toVariant() const
+        {
+            return
+            {
+                {"name", QVariant::fromValue(name)}
+                , {"login", QVariant::fromValue(login)}
+                , {"pass", QVariant::fromValue(pass)}
+            };
+        }
+
+        QJsonObject toJSONObject() const
+        {
+            return QJsonObject
+            {
+                {"name", name}
+                , {"login", login}
+                , {"pass", pass}
+            };
+        }
+
+        QString name;
+        QString login;
+        QString pass;
+    };
+
+    using CardList = QList<card_type>;
 
     explicit card_model(QObject *parent = nullptr);
-    ~card_model() override;
 
     enum logMessageRoles{
         CardName = Qt::UserRole + 1,
@@ -80,23 +84,19 @@ public:
     int rowCount(const QModelIndex &parent) const override;
     QVariant data(const QModelIndex &index, int role) const override;
     QHash<int, QByteArray> roleNames() const override;
+    Q_INVOKABLE bool removeRows(int row, int count, const QModelIndex & parent = QModelIndex()) override;
+    bool insertRows(int row, int count, const QModelIndex &parent = QModelIndex()) override;
+    bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) override;
 
-    Q_INVOKABLE void add(const card_type&);
+    Q_INVOKABLE void add();
     Q_INVOKABLE void clear();
     Q_INVOKABLE QList<card_type> rawData() const;
 
-    int count() const;
-
-signals:
-    void countChanged(int count);
+    bool fromVariantList(const QVariantList &list);
+    QVariantList toVariantList() const;
 
 private:
-    QList<card_type> m_data;
+    CardList m_data;
 };
-
-
-// регистрация для Qt
-#include <qmetatype.h>
-Q_DECLARE_METATYPE(card_type);
 
 #endif // DATA_MODEL_H
