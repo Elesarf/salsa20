@@ -11,10 +11,10 @@
  * @date	2019.12.23
  */
 
+#include <QDebug>
 #include <QStandardPaths>
 
 #include "salsa20.h"
-#include "json_parser.h"
 #include "data_model_controller.h"
 
 #include "view_model.h"
@@ -45,7 +45,8 @@ void view_model::save()
     if (m_masterPassword.isEmpty())
         return;
 
-    m_cardModel->save(m_salsa.get());
+    if (m_readyToWork)
+        m_cardModel->save(m_salsa.get());
 }
 
 void view_model::load()
@@ -53,7 +54,9 @@ void view_model::load()
     if (m_masterPassword.isEmpty())
         return;
 
-    m_cardModel->load(m_salsa.get());
+    m_cardModel->clear();
+    m_readyToWork = m_cardModel->load(m_salsa.get());
+    emit readyToWorkChanged(m_readyToWork);
 }
 
 data_model_controller *view_model::cardController()
@@ -74,6 +77,7 @@ void view_model::setMasterPassword(QString masterPassword)
     m_masterPassword = masterPassword;
 
     m_salsa = std::make_shared<salsa20>(masterPassword.toStdString(), c_nonce);
+    qDebug() << "master pass: " << masterPassword;
 
     emit masterPasswordChanged(m_masterPassword);
 }

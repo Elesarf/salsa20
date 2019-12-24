@@ -18,85 +18,109 @@ ApplicationWindow {
         id: viewModel
     }
 
-    ListView{
-        id: cardList
-        anchors.centerIn: parent
-        width: 420
-        height: 460
+    Column{
+        anchors.fill: parent
         spacing: 4
 
-        Rectangle{
-            anchors.fill: parent
-            z:-99
-            border.width: 1
-            border.color: "blue"
-        }
-
-        model: viewModel.cardController.modelData
-        delegate: PasswordDelegate{
+        TextInput{
+            id: masterPassInput
             width: parent.width
-            height: 80
+            height: 25
 
-            name: cardName
-            login: cardLogin
-            password: cardPassword
+            font.pointSize: 14
+            selectByMouse: true
+            maximumLength: 32
 
-            onRemoveThis: cardList.model.removeRows(index, 1)
-            Component.onCompleted: console.log(index)
-        }
-
-        footer: Rectangle{
-            width: parent.width
-            height: 40
-
-            Image {
-                id: addIcon
-                source: "qrc:/media/add_circle_outline-24px.svg"
-
-                anchors.horizontalCenter: parent.horizontalCenter
-                anchors.verticalCenter: parent.verticalCenter
-
-                fillMode: Image.Pad
-            }
-
-            border.width: 2
-            border.color: "blue"
-
-            MouseArea{
+            Rectangle{
                 anchors.fill: parent
+                border.width: 1
+                border.color: "blue"
+                z: -99
 
-                onClicked: cardList.model.add()
+                Image
+                {
+                    id: openButton
+                    source: "qrc:/media/lock_open-24px.svg"
+
+                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.right: parent.right
+
+                    fillMode: Image.Pad
+
+                    MouseArea{
+                        anchors.fill: parent
+
+                        onClicked: {
+                            viewModel.setMasterPassword(masterPassInput.text)
+                            viewModel.load()
+                            masterPassInput.focus = false
+                        }
+                    }
+                }
             }
+
+            onAccepted: viewModel.setMasterPassword(text)
+
         }
 
-        footerPositioning: ListView.OverlayFooter
-    }
+        ListView{
+            id: cardList
+            width: parent.width
+            height: 460
+            spacing: 4
 
-    Button{
-        id: saveButton
-        text: qsTr("save")
-        anchors.bottom: parent.bottom
+            Rectangle{
+                anchors.fill: parent
+                z:-99
+                border.width: 1
+                border.color: "blue"
+            }
 
-        onClicked: viewModel.save()
-    }
+            model: viewModel.cardController.modelData
+            delegate: PasswordDelegate{
+                width: parent.width
+                height: 80
 
-    Button{
-        id: loadButton
-        text: qsTr("load")
-        anchors.bottom: parent.bottom
-        anchors.left: saveButton.right
-        anchors.leftMargin: 4
+                name: cardName
+                login: cardLogin
+                password: cardPassword
 
-        onClicked: viewModel.load()
-    }
+                onRemoveThis: cardList.model.removeRows(index, 1)
+                onEditingFinished: {
+                    cardName = name
+                    cardLogin = login
+                    cardPassword = password
 
-    Button{
-        id: setMasterPasswordButton
-        text: qsTr("set pass")
-        anchors.bottom: parent.bottom
-        anchors.left: loadButton.right
-        anchors.leftMargin: 4
+                    viewModel.save()
+                    viewModel.load()
+                }
+            }
 
-        onClicked: viewModel.setMasterPassword("qwertyui")
+            footer: Rectangle{
+                width: parent.width
+                height: 40
+
+                Image {
+                    id: addIcon
+                    source: "qrc:/media/add_circle_outline-24px.svg"
+
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    anchors.verticalCenter: parent.verticalCenter
+
+                    fillMode: Image.Pad
+                }
+
+                border.width: 2
+                border.color: "blue"
+
+                MouseArea{
+                    anchors.fill: parent
+
+                    onClicked: if (viewModel.readyToWork) cardList.model.add()
+                }
+            }
+
+            footerPositioning: ListView.OverlayFooter
+        }
     }
 }

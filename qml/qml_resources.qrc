@@ -8,5 +8,10 @@
         <file>visibility_off-24px.svg</file>
         <file>add_circle_outline-24px.svg</file>
         <file>remove_circle_outline-24px.svg</file>
+        <file>create-24px.svg</file>
+        <file>save-24px.svg</file>
+        <file>lock_open-24px.svg</file>
+        <file>save_alt-24px.svg</file>
+        <file>more_horiz-24px.svg</file>
     </qresource>
 </RCC>
