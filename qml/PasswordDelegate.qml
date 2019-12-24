@@ -23,9 +23,13 @@ Item {
         id: background
         anchors.fill: parent
         z:-99
-        border.width: 2
-        border.color: "blue"
-        radius: 8
+        border.width: 1
+    }
+
+    Rectangle{
+        anchors.fill: parent
+        color: "#48a999"
+        z:-99
     }
 
     Rectangle{
@@ -37,19 +41,21 @@ Item {
         height: parent.height / 2.0
         width: parent.width
 
-        border.width: 2
-        border.color: "blue"
+        color: "#004c40"
 
         TextInput {
             id: nameTextInput
+            x:parent.x + 8
             text: name
             enabled: editMode
             height: parent.height
-            horizontalAlignment: Text.AlignHCenter
+            horizontalAlignment: Text.AlignLeft
             verticalAlignment: Text.AlignVCenter
 
-            anchors.verticalCenter: parent.verticalCenter
-            anchors.horizontalCenter: parent.horizontalCenter
+            font.pointSize: 14
+            color: "#ffffff"
+
+            selectByMouse: true
 
             onAccepted: name = nameTextInput.text
             onFocusChanged: name = nameTextInput.text
@@ -93,6 +99,11 @@ Item {
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
 
+        font.pointSize: 14
+        color: "#ffffff"
+
+        selectByMouse: true
+
         anchors.top: nameSection.bottom
         anchors.left: parent.left
         anchors.leftMargin: 4
@@ -111,7 +122,7 @@ Item {
         anchors.topMargin: 2
 
         border.width: 1
-        border.color: "blue"
+        border.color: "#48a999"
     }
 
     TextInput {
@@ -121,6 +132,11 @@ Item {
         height: parent.height / 2.0
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
+
+        font.pointSize: 14
+        color: "#ffffff"
+
+        selectByMouse: true
 
         anchors.top: nameSection.bottom
         anchors.left: fieldsBorder.left

@@ -101,7 +101,7 @@ bool card_model::insertRows(int row, int count, const QModelIndex &parent)
 void card_model::add()
 {
     beginInsertRows(QModelIndex(), m_data.size(), m_data.size());
-    m_data.append(card_type());
+    m_data.append(card_type({"Name","Login","Password"}));
     endInsertRows();
 }
 

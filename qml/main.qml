@@ -1,5 +1,6 @@
 import QtQuick 2.5
 import QtQuick.Controls 2.0
+import QtQuick.Layouts 1.3
 import com.ass.crypter 1.0
 import "."
 
@@ -12,7 +13,7 @@ ApplicationWindow {
     minimumHeight: 240
     title: qsTr("tracking JSON pleer")
 
-    color: "grey"
+    color: "#00796b"
 
     ViewModel{
         id: viewModel
@@ -28,13 +29,14 @@ ApplicationWindow {
             height: 25
 
             font.pointSize: 14
+            color: "#ffffff"
+
             selectByMouse: true
             maximumLength: 32
 
             Rectangle{
                 anchors.fill: parent
-                border.width: 1
-                border.color: "blue"
+                color: "#004c40"
                 z: -99
 
                 Image
@@ -60,21 +62,16 @@ ApplicationWindow {
             }
 
             onAccepted: viewModel.setMasterPassword(text)
-
         }
 
         ListView{
             id: cardList
             width: parent.width
-            height: 460
-            spacing: 4
-
-            Rectangle{
-                anchors.fill: parent
-                z:-99
-                border.width: 1
-                border.color: "blue"
-            }
+            height: parent.height - masterPassInput.height - parent.spacing
+            spacing: 8
+            clip: true
+            Layout.alignment: Qt.AlignCenter
+            Layout.preferredHeight: height
 
             model: viewModel.cardController.modelData
             delegate: PasswordDelegate{
@@ -96,31 +93,40 @@ ApplicationWindow {
                 }
             }
 
+            footerPositioning: ListView.OverlayFooter
             footer: Rectangle{
                 width: parent.width
-                height: 40
+                height: 70
+                z: 2
+                color: "#00796b"
 
-                Image {
-                    id: addIcon
-                    source: "qrc:/media/add_circle_outline-24px.svg"
+                Rectangle{
+                    width: 50
+                    height: 50
+                    radius: 30
+                    color: "#004c40"
 
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.right: parent.right
+                    anchors.rightMargin: 10
+                    anchors.bottom: parent.bottom
+                    anchors.bottomMargin: 10
 
-                    fillMode: Image.Pad
-                }
+                    Image {
+                        id: addIcon
+                        source: "qrc:/media/add_circle_outline-24px.svg"
 
-                border.width: 2
-                border.color: "blue"
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        anchors.verticalCenter: parent.verticalCenter
 
-                MouseArea{
-                    anchors.fill: parent
+                        fillMode: Image.Pad
+                    }
 
-                    onClicked: if (viewModel.readyToWork) cardList.model.add()
+                    MouseArea{
+                        anchors.fill: parent
+                        onClicked: if (viewModel.readyToWork) cardList.model.add()
+                    }
                 }
             }
-
-            footerPositioning: ListView.OverlayFooter
         }
     }
 }
