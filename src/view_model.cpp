@@ -55,7 +55,8 @@ void view_model::load()
         return;
 
     m_cardModel->clear();
-    m_readyToWork = m_cardModel->load(m_salsa.get());
+    m_cardModel->load(m_salsa.get());
+    m_readyToWork = true;
     emit readyToWorkChanged(m_readyToWork);
 }
 

@@ -15,24 +15,40 @@ ApplicationWindow {
 
     color: "#00796b"
 
+    property int dpi: Screen.pixelDensity * 25.4
+
+    function dp(x){
+        if(dpi < 120) {
+            return x; // Для обычного монитора компьютера
+        } else {
+            return x*(dpi/160);
+        }
+    }
+
     ViewModel{
         id: viewModel
     }
 
     Column{
         anchors.fill: parent
-        spacing: 4
+        spacing: dp(5)
 
         TextInput{
             id: masterPassInput
             width: parent.width
-            height: 25
+            height: dp(100)
 
             font.pointSize: 14
             color: "#ffffff"
 
             selectByMouse: true
             maximumLength: 32
+
+            onAccepted: {
+                viewModel.setMasterPassword(masterPassInput.text)
+                viewModel.load()
+                masterPassInput.focus = false
+            }
 
             Rectangle{
                 anchors.fill: parent
@@ -60,15 +76,13 @@ ApplicationWindow {
                     }
                 }
             }
-
-            onAccepted: viewModel.setMasterPassword(text)
         }
 
         ListView{
             id: cardList
             width: parent.width
             height: parent.height - masterPassInput.height - parent.spacing
-            spacing: 8
+            spacing: dp(8)
             clip: true
             Layout.alignment: Qt.AlignCenter
             Layout.preferredHeight: height
@@ -76,7 +90,7 @@ ApplicationWindow {
             model: viewModel.cardController.modelData
             delegate: PasswordDelegate{
                 width: parent.width
-                height: 80
+                height: dp(250)
 
                 name: cardName
                 login: cardLogin
@@ -96,20 +110,20 @@ ApplicationWindow {
             footerPositioning: ListView.OverlayFooter
             footer: Rectangle{
                 width: parent.width
-                height: 70
+                height: dp(300)
                 z: 2
                 color: "#00796b"
 
                 Rectangle{
-                    width: 50
-                    height: 50
-                    radius: 30
+                    width: dp(140)
+                    height: dp(140)
+                    radius: dp(70)
                     color: "#004c40"
 
                     anchors.right: parent.right
-                    anchors.rightMargin: 10
+                    anchors.rightMargin: dp(40)
                     anchors.bottom: parent.bottom
-                    anchors.bottomMargin: 10
+                    anchors.bottomMargin: dp(40)
 
                     Image {
                         id: addIcon

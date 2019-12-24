@@ -58,7 +58,7 @@ bool data_model_controller::save(salsa20 *salsa)
 
     if (!dir.exists())
     {
-        dir.mkpath(fileName);
+        dir.mkpath(path);
     }
 
     QFile json_file(fileName);
@@ -132,7 +132,7 @@ bool data_model_controller::load(salsa20 *salsa)
 
     QFile jsFile(fileName);
     if(!jsFile.open(QIODevice::ReadOnly | QIODevice::Text))
-        throw std::runtime_error("JSONSaver: Error: Failed open test file");
+        return false;
 
     if (!salsa)
     {
@@ -181,13 +181,13 @@ bool data_model_controller::load(salsa20 *salsa)
     jsFile.close();
 
     if(!jsDoc.isObject())
-        throw std::runtime_error("JSONSaver: Error: bad JSON file");
+        return false;
 
     QJsonObject jsObj = jsDoc.object();
     QJsonValue jsVal = jsObj["data"];
 
     if(!jsVal.isArray())
-        throw std::runtime_error("JSONSaver: Error: bad JSON file");
+        return false;
 
     QJsonArray jsArr = jsVal.toArray();
 
