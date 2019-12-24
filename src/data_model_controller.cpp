@@ -6,26 +6,14 @@
  ******************************************************************************/
 
 /**
- * @file:	include/json_parser.h
+ * @file:	src/data_model_controller.cpp
  * @author:	А.В. Федченко
- * @date	2019.12.23
+ * @date	2019.12.24
  */
 
-#ifndef JSON_PARSER_H
-#define JSON_PARSER_H
+#include "../include/data_model_controller.h"
 
-#include <memory>
-
-#include <QList>
-
-class card_type;
-class salsa20;
-class json_parser
+data_model_controller::data_model_controller(QObject *parent) : QObject(parent)
 {
-public:
 
-    static QList<card_type> load(const QString &file_name, std::shared_ptr<salsa20> salsa = nullptr);
-    static void save(const QString &file_name, const QList<card_type> &data, std::shared_ptr<salsa20> salsa = nullptr);
-};
-
-#endif // JSON_PARSER_H
+}
