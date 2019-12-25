@@ -22,6 +22,8 @@ set(HEADERS
 
 set(QML_SOURCES
     qml/main.qml
+    qml/CardList.qml
+    qml/EnterScreen.qml
     qml/PasswordDelegate.qml
     )
 

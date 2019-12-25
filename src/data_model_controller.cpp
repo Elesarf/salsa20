@@ -27,9 +27,10 @@
 #include "../include/data_model_controller.h"
 
 data_model_controller::data_model_controller(QObject *parent) : QObject(parent),
-    m_model(new card_model())
-{
-}
+    m_model(new card_model()),
+    m_path(QStandardPaths::writableLocation(QStandardPaths::ConfigLocation) + "/sc/"),
+    m_fileName("data.json")
+{}
 
 int data_model_controller::size() const
 {
@@ -51,17 +52,14 @@ void data_model_controller::add()
 
 bool data_model_controller::save(salsa20 *salsa)
 {
-    QString path = QStandardPaths::writableLocation(QStandardPaths::ConfigLocation) + "/pc/";
-    QString fileName = path + "data.json";
-
-    QDir dir(path);
+    QDir dir(m_path);
 
     if (!dir.exists())
     {
-        dir.mkpath(path);
+        dir.mkpath(m_path);
     }
 
-    QFile json_file(fileName);
+    QFile json_file(m_path + m_fileName);
     if(!json_file.open(QIODevice::WriteOnly))
     {
         return false;
@@ -128,7 +126,7 @@ bool data_model_controller::save(salsa20 *salsa)
 bool data_model_controller::load(salsa20 *salsa)
 {
     QByteArray file_buffer;
-    auto fileName = QStandardPaths::writableLocation(QStandardPaths::ConfigLocation) + "/pc/data.json";
+    auto fileName = m_path + m_fileName;
 
     QFile jsFile(fileName);
     if(!jsFile.open(QIODevice::ReadOnly | QIODevice::Text))
@@ -193,4 +191,9 @@ bool data_model_controller::load(salsa20 *salsa)
 
     m_model->fromVariantList(jsArr.toVariantList());
     return true;
+}
+
+bool data_model_controller::isDataFileAvailable() const
+{
+    return QFile::exists(m_path + m_fileName);
 }

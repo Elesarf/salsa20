@@ -2,6 +2,8 @@
     <qresource prefix="/">
         <file>main.qml</file>
         <file>PasswordDelegate.qml</file>
+        <file>EnterScreen.qml</file>
+        <file>CardList.qml</file>
     </qresource>
     <qresource prefix="/media">
         <file>visibility-24px.svg</file>

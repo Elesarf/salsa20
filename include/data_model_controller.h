@@ -36,6 +36,7 @@ public:
 
     Q_INVOKABLE bool save(salsa20 *salsa = nullptr);
     Q_INVOKABLE bool load(salsa20 *salsa = nullptr);
+    Q_INVOKABLE bool isDataFileAvailable() const;
 
 signals:
     void sizeChanged(int size);
@@ -43,6 +44,9 @@ signals:
 private:
     int m_size;
     card_model *m_model;
+
+    QString m_path;
+    QString m_fileName;
 };
 
 #endif // DATA_MODEL_CONTROLLER_H
