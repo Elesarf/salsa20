@@ -15,8 +15,12 @@ Item {
         if (editMode)
             showPassword = true
 
-        if (!editMode)
+        if (!editMode){
+            nameTextInput.focus = false
+            loginTextInput.focus = false
+            passwordTextInput.focus = false
             editingFinished()
+        }
     }
 
     Rectangle{
