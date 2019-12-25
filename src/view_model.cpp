@@ -46,7 +46,10 @@ void view_model::save()
         return;
 
     if (m_readyToWork)
+    {
+        m_cardModel->backup();
         m_cardModel->save(m_salsa);
+    }
 }
 
 void view_model::load()

@@ -16,6 +16,7 @@
 #include <QJsonObject>
 #include <QJsonDocument>
 #include <QFile>
+#include <QDateTime>
 #include <QDir>
 #include <QStandardPaths>
 #include <QVector>
@@ -29,6 +30,7 @@
 dataModelController::dataModelController(QObject *parent) : QObject(parent),
     m_model(new cardModel()),
     m_path(QStandardPaths::writableLocation(QStandardPaths::ConfigLocation) + "/sc/"),
+    m_backupPath(m_path + "bak/"),
     m_fileName("data.json")
 {}
 
@@ -50,7 +52,7 @@ void dataModelController::add()
     emit sizeChanged(m_model->rowCount(QModelIndex()));
 }
 
-bool dataModelController::save(QSharedPointer<salsa20> salsa)
+bool dataModelController::save(QSharedPointer<salsa20> salsa) const
 {
     QDir dir(m_path);
 
@@ -194,4 +196,15 @@ bool dataModelController::load(QSharedPointer<salsa20> salsa)
 bool dataModelController::isDataFileAvailable() const
 {
     return QFile::exists(m_path + m_fileName);
+}
+
+bool dataModelController::backup() const
+{
+    QDir dir(m_backupPath);
+    if (!dir.exists())
+        dir.mkpath(m_backupPath);
+
+    auto timestamp = QString::number(QDateTime::currentMSecsSinceEpoch());
+
+    return QFile::copy(m_path + m_fileName, m_backupPath + m_fileName + "." + timestamp);
 }

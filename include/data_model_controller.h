@@ -35,9 +35,10 @@ public:
     Q_INVOKABLE void clear();
     Q_INVOKABLE void add();
 
-    Q_INVOKABLE bool save(QSharedPointer<salsa20> salsa = QSharedPointer<salsa20>(nullptr));
+    Q_INVOKABLE bool save(QSharedPointer<salsa20> salsa = QSharedPointer<salsa20>(nullptr)) const;
     Q_INVOKABLE bool load(QSharedPointer<salsa20> salsa = QSharedPointer<salsa20>(nullptr));
     Q_INVOKABLE bool isDataFileAvailable() const;
+    Q_INVOKABLE bool backup() const;
 
 signals:
     void sizeChanged(int size);
@@ -47,6 +48,7 @@ private:
     cardModel *m_model;
 
     QString m_path;
+    QString m_backupPath;
     QString m_fileName;
 };
 
