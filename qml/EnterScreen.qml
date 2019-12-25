@@ -41,6 +41,10 @@ Item{
             focus: true
             closePolicy: Popup.NoAutoClose
 
+            exit: Transition {
+                NumberAnimation { property: "opacity"; from: 1.0; to: 0.0; duration: 250 }
+            }
+
             background: Rectangle{color: "#00796b"}
 
             Component.onCompleted: open()
@@ -98,7 +102,8 @@ Item{
                 }
 
                 onAccepted: {
-                    prepareStorage()
+                    if (masterPassInput.text.length != 0)
+                        prepareStorage()
                 }
 
                 Button{
@@ -138,7 +143,8 @@ Item{
                     }
 
                     onClicked: {
-                        prepareStorage()
+                        if (masterPassInput.text.length != 0)
+                            prepareStorage()
                     }
                 }
             }
