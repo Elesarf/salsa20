@@ -3,6 +3,10 @@ cmake_minimum_required(VERSION 3.9)
 
 project("salsa")
 
+if (WIN32)
+    set(FUCK_THE_WIN WIN32)
+endif()
+
 set(SOURCES
     src/main.cpp
     src/salsa20.cpp
@@ -30,7 +34,7 @@ set(QML_SOURCES
 find_package(Qt5 COMPONENTS Core Qml Quick REQUIRED)
 qt5_add_resources(QT_RESOURCES qml/qml_resources.qrc)
 
-add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS} ${QML_SOURCES} ${QT_RESOURCES})
+add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS} ${QML_SOURCES} ${QT_RESOURCES} ${FUCK_THE_WIN})
 
 target_compile_definitions(${PROJECT_NAME} PRIVATE ${QtQml_DEFINITIONS})
 
