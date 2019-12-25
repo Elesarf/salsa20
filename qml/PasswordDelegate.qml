@@ -45,7 +45,7 @@ Item {
 
         TextInput {
             id: nameTextInput
-            x:parent.x + 8
+            x: parent.x + dp(8)
             text: name
             enabled: editMode
             height: parent.height
@@ -68,7 +68,7 @@ Item {
 
             anchors.verticalCenter: parent.verticalCenter
             anchors.right: parent.right
-            anchors.rightMargin: 8
+            anchors.rightMargin: dp(28)
 
             MouseArea{
                 anchors.fill: parent
@@ -155,6 +155,7 @@ Item {
 
         anchors.top: nameSection.bottom
         anchors.right: parent.right
+        anchors.rightMargin: dp(16)
 
         MouseArea{
             anchors.fill: parent

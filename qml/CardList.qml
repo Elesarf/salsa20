@@ -32,30 +32,42 @@ ListView{
     footerPositioning: ListView.OverlayFooter
     footer: Rectangle{
         width: parent.width
-        height: dp(100)
+        height: dp(92)
         z: 2
-        color: "#00796b"
+        color: "transparent"
 
         Rectangle{
-            width: dp(80)
-            height: dp(80)
-            radius: dp(40)
+            width: dp(60)
+            height: dp(60)
+            radius: dp(30)
             color: "#004c40"
 
             anchors.right: parent.right
-            anchors.rightMargin: dp(8)
+            anchors.rightMargin: dp(16)
             anchors.bottom: parent.bottom
-            anchors.bottomMargin: dp(8)
+            anchors.bottomMargin: dp(16)
 
-            Image {
-                anchors.fill: parent
-                id: addIcon
-                source: "qrc:/media/add_circle_outline-24px.svg"
 
-                anchors.horizontalCenter: parent.horizontalCenter
+            Rectangle{
+                width: dp(2)
+                height: dp(30)
+
                 anchors.verticalCenter: parent.verticalCenter
+                anchors.horizontalCenter: parent.horizontalCenter
 
-                fillMode: Image.Pad
+                border.width: dp()
+                border.color: "black"
+            }
+
+            Rectangle{
+                width: dp(30)
+                height: dp(2)
+
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.horizontalCenter: parent.horizontalCenter
+
+                border.width: dp(3)
+                border.color: "black"
             }
 
             MouseArea{

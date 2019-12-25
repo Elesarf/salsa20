@@ -20,7 +20,7 @@ ApplicationWindow {
 
     function dp(x){
         if(dpi < 120) {
-            return x; // Для обычного монитора компьютера
+            return x;
         } else {
             return x*(dpi/160);
         }
