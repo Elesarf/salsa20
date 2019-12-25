@@ -1,6 +1,7 @@
 import QtQuick 2.5
 import QtQuick.Controls 2.0
 import QtQuick.Layouts 1.3
+import QtQuick.Window 2.1
 import com.ass.crypter 1.0
 import "."
 
@@ -11,7 +12,7 @@ ApplicationWindow {
     height: 560
     minimumWidth: 320
     minimumHeight: 240
-    title: qsTr("tracking JSON pleer")
+    title: qsTr("sc")
 
     color: "#00796b"
 
@@ -29,49 +30,96 @@ ApplicationWindow {
         id: viewModel
     }
 
-    Column{
+    StackLayout{
+        id: stack
         anchors.fill: parent
-        spacing: dp(5)
 
-        TextInput{
-            id: masterPassInput
+        Rectangle{
+            id: unlockScreen
             width: parent.width
-            height: dp(100)
+            height: parent.height
+            color: "black"
+            opacity: 0.1
+            z: -100
 
-            font.pointSize: 14
-            color: "#ffffff"
+            Popup{
+                id: unlockPopup
+                width: dp(400)
+                height: dp(140)
+                x: Math.round((parent.width - width) / 2)
+                y: Math.round((parent.height - height) / 2)
 
-            selectByMouse: true
-            maximumLength: 32
+                modal: true
+                focus: true
+                closePolicy: Popup.NoAutoClose
 
-            onAccepted: {
-                viewModel.setMasterPassword(masterPassInput.text)
-                viewModel.load()
-                masterPassInput.focus = false
-            }
+                background: Rectangle{color: "#00796b"}
 
-            Rectangle{
-                anchors.fill: parent
-                color: "#004c40"
-                z: -99
+                Component.onCompleted: open()
 
-                Image
-                {
-                    id: openButton
-                    source: "qrc:/media/lock_open-24px.svg"
+                TextInput{
+                    id: masterPassInput
+                    width: parent.width
+                    height: dp(50)
 
-                    anchors.verticalCenter: parent.verticalCenter
-                    anchors.right: parent.right
+                    font.pointSize: 14
+                    color: "#ffffff"
+                    verticalAlignment: Text.AlignVCenter
 
-                    fillMode: Image.Pad
+                    wrapMode: TextInput.Wrap
 
-                    MouseArea{
+                    selectByMouse: true
+                    maximumLength: 32
+
+                    Rectangle{
                         anchors.fill: parent
+                        color: "#004c40"
+                        z: -99
+                    }
+
+                    Button{
+                        anchors.top: masterPassInput.bottom
+                        anchors.topMargin: dp(12)
+
+                        Image
+                        {
+                            id: closeButton
+                            source: "qrc:/media/close-24px.svg"
+
+                            anchors.verticalCenter: parent.verticalCenter
+                            anchors.horizontalCenter: parent.horizontalCenter
+
+                            fillMode: Image.Pad
+                        }
+
+                        onClicked: {
+                            mainWindow.close()
+                        }
+                    }
+
+                    Button{
+                        anchors.top: parent.bottom
+                        anchors.topMargin: dp(12)
+                        anchors.right: parent.right
+
+                        Image
+                        {
+                            id: openButton
+                            source: "qrc:/media/lock_open-24px.svg"
+
+                            anchors.verticalCenter: parent.verticalCenter
+                            anchors.horizontalCenter: parent.horizontalCenter
+
+                            fillMode: Image.Pad
+                        }
 
                         onClicked: {
                             viewModel.setMasterPassword(masterPassInput.text)
                             viewModel.load()
                             masterPassInput.focus = false
+
+                            unlockPopup.close()
+                            stack.currentIndex = (++stack.currentIndex) % stack.count
                         }
                     }
                 }
@@ -81,16 +129,16 @@ ApplicationWindow {
         ListView{
             id: cardList
             width: parent.width
-            height: parent.height - masterPassInput.height - parent.spacing
             spacing: dp(8)
             clip: true
             Layout.alignment: Qt.AlignCenter
             Layout.preferredHeight: height
 
             model: viewModel.cardController.modelData
+
             delegate: PasswordDelegate{
                 width: parent.width
-                height: dp(250)
+                height: dp(100)
 
                 name: cardName
                 login: cardLogin
@@ -110,22 +158,23 @@ ApplicationWindow {
             footerPositioning: ListView.OverlayFooter
             footer: Rectangle{
                 width: parent.width
-                height: dp(300)
+                height: dp(100)
                 z: 2
                 color: "#00796b"
 
                 Rectangle{
-                    width: dp(140)
-                    height: dp(140)
-                    radius: dp(70)
+                    width: dp(80)
+                    height: dp(80)
+                    radius: dp(40)
                     color: "#004c40"
 
                     anchors.right: parent.right
-                    anchors.rightMargin: dp(40)
+                    anchors.rightMargin: dp(8)
                     anchors.bottom: parent.bottom
-                    anchors.bottomMargin: dp(40)
+                    anchors.bottomMargin: dp(8)
 
                     Image {
+                        anchors.fill: parent
                         id: addIcon
                         source: "qrc:/media/add_circle_outline-24px.svg"
 

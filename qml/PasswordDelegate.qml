@@ -106,7 +106,7 @@ Item {
 
         anchors.top: nameSection.bottom
         anchors.left: parent.left
-        anchors.leftMargin: 4
+        anchors.leftMargin: dp(8)
 
         onAccepted: login = loginTextInput.text
         onFocusChanged: login = loginTextInput.text
@@ -115,14 +115,14 @@ Item {
     Rectangle{
         id: fieldsBorder
         x: nameSection.width / 2
-        height: nameSection.height - nameSection.border.width * 4
+        height: nameSection.height - nameSection.border.width * dp(8 * 2)
         width: 2
 
         anchors.top: nameSection.bottom
-        anchors.topMargin: 2
+        anchors.topMargin: dp(8)
 
         border.width: 1
-        border.color: "#48a999"
+        border.color: "#004c40"
     }
 
     TextInput {
@@ -140,7 +140,7 @@ Item {
 
         anchors.top: nameSection.bottom
         anchors.left: fieldsBorder.left
-        anchors.leftMargin: 4
+        anchors.leftMargin: dp(8)
 
         onAccepted: password = passwordTextInput.text
         onFocusChanged: password = passwordTextInput.text
@@ -168,7 +168,7 @@ Item {
     function hideString(stringToHide){
         var hidingString = ""
 
-        for (var i = 0; i < stringToHide.length; ++i)
+        for (var i = 0; i < 9; ++i)
             hidingString += "*"
 
         return hidingString
