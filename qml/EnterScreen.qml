@@ -9,6 +9,18 @@ Item{
     signal close
     signal openStorage
 
+    function prepareStorage(){
+        masterPassInput.focus = false
+        model.setMasterPassword(masterPassInput.text)
+        if (model.load()){
+            unlockPopup.close()
+            openStorage()
+            return;
+        }
+
+        bad.start()
+    }
+
     Rectangle{
         id: unlockScreen
 
@@ -65,9 +77,28 @@ Item{
                 maximumLength: 32
 
                 Rectangle{
+                    id: textBorder
                     anchors.fill: parent
                     color: "#004c40"
                     z: -99
+
+                    border.width: 0
+                    border.color: "#EF6C00"
+
+
+                    NumberAnimation {
+                        id: bad
+                        target: textBorder.border
+                        property: "width"
+                        duration: 400
+                        from: 3.1
+                        to: 0.0
+                        easing.type: Easing.OutExpo
+                    }
+                }
+
+                onAccepted: {
+                    prepareStorage()
                 }
 
                 Button{
@@ -107,12 +138,7 @@ Item{
                     }
 
                     onClicked: {
-                        masterPassInput.focus = false
-                        model.setMasterPassword(masterPassInput.text)
-                        model.load()
-
-                        unlockPopup.close()
-                        openStorage()
+                        prepareStorage()
                     }
                 }
             }

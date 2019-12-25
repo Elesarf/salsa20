@@ -41,7 +41,7 @@ public:
     bool readyToWork() const;
 
     Q_INVOKABLE void save();
-    Q_INVOKABLE void load();
+    Q_INVOKABLE bool load();
 
 public slots:
     void setMasterPassword(QString masterPassword);

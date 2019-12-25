@@ -52,17 +52,17 @@ void view_model::save()
     }
 }
 
-void view_model::load()
+bool view_model::load()
 {
     if (m_masterPassword.isEmpty())
-        return;
+        return false;
 
     m_cardModel->clear();
-    m_cardModel->load(m_salsa);
 
     m_readyToWork = true;
-
     emit readyToWorkChanged(m_readyToWork);
+
+    return m_cardModel->load(m_salsa);
 }
 
 dataModelController *view_model::cardController()
