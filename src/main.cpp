@@ -1,3 +1,4 @@
+#include <QIcon>
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 
@@ -10,6 +11,7 @@ int main(int argc, char **argv)
     QGuiApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     QGuiApplication app(argc, argv);
     QQmlApplicationEngine engine;
+    app.setWindowIcon(QIcon(":/media/owlkey.png"));
 
     qmlRegisterType<data_model_controller>("com.ass.crypter", 1, 0, "CardController");
     qmlRegisterType<view_model>("com.ass.crypter", 1, 0, "ViewModel");
