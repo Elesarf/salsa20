@@ -12,7 +12,7 @@ Item{
     function prepareStorage(){
         masterPassInput.focus = false
         model.setMasterPassword(masterPassInput.text)
-        if (model.load()){
+        if (model.load() || !model.cardController.isDataFileAvailable()){
             unlockPopup.close()
             openStorage()
             return;
