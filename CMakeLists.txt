@@ -12,7 +12,6 @@ set(SOURCES
     src/salsa20.cpp
     src/view_model.cpp
     src/data_model.cpp
-    src/salsa_file_wrapper.cpp
     src/data_model_controller.cpp
     )
 
@@ -20,7 +19,6 @@ set(HEADERS
     include/salsa20.h
     include/data_model.h
     include/view_model.h
-    include/salsa_file_wrapper.h
     include/data_model_controller.h
     )
 

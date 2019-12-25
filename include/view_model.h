@@ -14,12 +14,12 @@
 #ifndef VIEW_MODEL_H
 #define VIEW_MODEL_H
 
-#include <memory>
+#include <QSharedPointer>
 
 #include <QObject>
 #include <QList>
 
-class data_model_controller;
+class dataModelController;
 class salsa20;
 class view_model : public QObject
 {
@@ -29,7 +29,7 @@ public:
     Q_PROPERTY(QString masterPassword READ masterPassword WRITE setMasterPassword NOTIFY masterPasswordChanged)
     Q_PROPERTY(QString fileName READ fileName WRITE setFileName NOTIFY fileNameChanged)
     Q_PROPERTY(bool readyToWork READ readyToWork WRITE setReadyToWork NOTIFY readyToWorkChanged)
-    Q_PROPERTY(data_model_controller *cardController READ cardController CONSTANT)
+    Q_PROPERTY(dataModelController *cardController READ cardController CONSTANT)
 
     explicit view_model(QObject *parent = nullptr);
     ~view_model();
@@ -37,7 +37,7 @@ public:
     QString masterPassword() const;
     QString fileName() const;
 
-    data_model_controller* cardController();
+    dataModelController* cardController();
     bool readyToWork() const;
 
     Q_INVOKABLE void save();
@@ -57,9 +57,9 @@ private:
     QString m_masterPassword;
     bool m_readyToWork;
 
-    std::shared_ptr<salsa20> m_salsa;
+    QSharedPointer<salsa20> m_salsa;
     QString m_fileName;
-    data_model_controller* m_cardModel;
+    dataModelController* m_cardModel;
 };
 
 

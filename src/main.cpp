@@ -13,7 +13,7 @@ int main(int argc, char **argv)
     QQmlApplicationEngine engine;
     app.setWindowIcon(QIcon(":/media/owlkey.png"));
 
-    qmlRegisterType<data_model_controller>("com.ass.crypter", 1, 0, "CardController");
+    qmlRegisterType<dataModelController>("com.ass.crypter", 1, 0, "CardController");
     qmlRegisterType<view_model>("com.ass.crypter", 1, 0, "ViewModel");
 
     engine.load(QUrl("qrc:/main.qml"));

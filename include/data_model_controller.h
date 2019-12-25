@@ -14,28 +14,29 @@
 #ifndef DATA_MODEL_CONTROLLER_H
 #define DATA_MODEL_CONTROLLER_H
 
+#include <QSharedPointer>
 #include <QObject>
 #include "data_model.h"
 
 class salsa20;
-class data_model_controller : public QObject
+class dataModelController : public QObject
 {
     Q_OBJECT
 
-    Q_PROPERTY(card_model *modelData READ modelData CONSTANT)
+    Q_PROPERTY(cardModel *modelData READ modelData CONSTANT)
     Q_PROPERTY(int size READ size NOTIFY sizeChanged)
 
 public:
-    explicit data_model_controller(QObject *parent = nullptr);
+    explicit dataModelController(QObject *parent = nullptr);
     int size() const;
 
-    Q_INVOKABLE card_model *modelData();
+    Q_INVOKABLE cardModel *modelData();
 
     Q_INVOKABLE void clear();
     Q_INVOKABLE void add();
 
-    Q_INVOKABLE bool save(salsa20 *salsa = nullptr);
-    Q_INVOKABLE bool load(salsa20 *salsa = nullptr);
+    Q_INVOKABLE bool save(QSharedPointer<salsa20> salsa = QSharedPointer<salsa20>(nullptr));
+    Q_INVOKABLE bool load(QSharedPointer<salsa20> salsa = QSharedPointer<salsa20>(nullptr));
     Q_INVOKABLE bool isDataFileAvailable() const;
 
 signals:
@@ -43,7 +44,7 @@ signals:
 
 private:
     int m_size;
-    card_model *m_model;
+    cardModel *m_model;
 
     QString m_path;
     QString m_fileName;

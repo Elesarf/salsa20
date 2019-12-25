@@ -1,14 +1,14 @@
 /******************************************************************************
  * Разработчик: Закрытое акционерное общество "Научно исследовательский       *
- * институт "Центрпрограммсистем", г. Тверь (ЗАО НИИ ЦПС)					  *
- *																			  *
- * Интеллектуальная собственность ЗАО НИИ ЦПС								  *
+ * институт "Центрпрограммсистем", г. Тверь (ЗАО НИИ ЦПС)                   *
+ *                                                                            *
+ * Интеллектуальная собственность ЗАО НИИ ЦПС                               *
  ******************************************************************************/
 
 /**
- * @file:	src/view_model.cpp
- * @author:	А.В. Федченко
- * @date	2019.12.23
+ * @file:   src/view_model.cpp
+ * @author: А.В. Федченко
+ * @date    2019.12.23
  */
 
 #include <QDebug>
@@ -25,10 +25,10 @@ view_model::view_model(QObject *parent) : QObject(parent),
     m_masterPassword(""),
     m_readyToWork(false)
 {
-    m_cardModel = new data_model_controller(this);
+    m_cardModel = new dataModelController(this);
 }
 
-view_model::~view_model(){}
+view_model::~view_model() {}
 
 QString view_model::masterPassword() const
 {
@@ -46,7 +46,7 @@ void view_model::save()
         return;
 
     if (m_readyToWork)
-        m_cardModel->save(m_salsa.get());
+        m_cardModel->save(m_salsa);
 }
 
 void view_model::load()
@@ -55,12 +55,14 @@ void view_model::load()
         return;
 
     m_cardModel->clear();
-    m_cardModel->load(m_salsa.get());
+    m_cardModel->load(m_salsa);
+
     m_readyToWork = true;
+
     emit readyToWorkChanged(m_readyToWork);
 }
 
-data_model_controller *view_model::cardController()
+dataModelController *view_model::cardController()
 {
     return m_cardModel;
 }
@@ -77,7 +79,7 @@ void view_model::setMasterPassword(QString masterPassword)
 
     m_masterPassword = masterPassword;
 
-    m_salsa = std::make_shared<salsa20>(masterPassword.toStdString(), c_nonce);
+    m_salsa.reset(new salsa20{masterPassword.toStdString(), c_nonce});
 
     emit masterPasswordChanged(m_masterPassword);
 }

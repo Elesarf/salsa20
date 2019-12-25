@@ -26,106 +26,103 @@
 
 #include "../include/data_model_controller.h"
 
-data_model_controller::data_model_controller(QObject *parent) : QObject(parent),
-    m_model(new card_model()),
+dataModelController::dataModelController(QObject *parent) : QObject(parent),
+    m_model(new cardModel()),
     m_path(QStandardPaths::writableLocation(QStandardPaths::ConfigLocation) + "/sc/"),
     m_fileName("data.json")
 {}
 
-int data_model_controller::size() const
+int dataModelController::size() const
 {
     return m_size;
 }
 
-card_model *data_model_controller::modelData()
+cardModel *dataModelController::modelData()
 {
     return m_model;
 }
 
-void data_model_controller::clear() {m_model->clear();}
+void dataModelController::clear() {m_model->clear();}
 
-void data_model_controller::add()
+void dataModelController::add()
 {
     m_model->add();
     emit sizeChanged(m_model->rowCount(QModelIndex()));
 }
 
-bool data_model_controller::save(salsa20 *salsa)
+bool dataModelController::save(QSharedPointer<salsa20> salsa)
 {
     QDir dir(m_path);
 
     if (!dir.exists())
-    {
         dir.mkpath(m_path);
-    }
 
-    QFile json_file(m_path + m_fileName);
-    if(!json_file.open(QIODevice::WriteOnly))
-    {
+    QFile jsonFile(m_path + m_fileName);
+
+    if(!jsonFile.open(QIODevice::WriteOnly))
         return false;
-    }
 
-    QJsonArray js_array;
+    QJsonArray jsArray;
 
     for(const auto &o : m_model->rawData())
-        js_array.append(o.toJSONObject());
+        jsArray.append(o.toJSONObject());
 
     QJsonObject jsObj;
-    jsObj["data"] = js_array;
+    jsObj["data"] = jsArray;
     QJsonDocument jsDoc(jsObj);
 
-    auto file_buffer = jsDoc.toJson(QJsonDocument::Indented);
+    auto fileBuffer = jsDoc.toJson(QJsonDocument::Indented);
 
     if (!salsa)
     {
-        json_file.resize(0);
-        json_file.write(file_buffer);
-        json_file.close();
+        jsonFile.resize(0);
+        jsonFile.write(fileBuffer);
+        jsonFile.close();
         return true;
     }
 
-    QByteArray encrypt_file_buffer;
+    QByteArray encryptFileBuffer;
     salsa->begin_crypt();
-    salsa20::block_array block_buffer;
-    quint32 byte_counter = 0;
+    salsa20::block_array blockBuffer;
+    quint32 byteCounter = 0;
 
-    for (qint32 i = 0; i < file_buffer.size(); ++i)
+    for (qint32 i = 0; i < fileBuffer.size(); ++i)
     {
-        if (byte_counter < block_buffer.size())
+        if (byteCounter < blockBuffer.size())
         {
-            block_buffer[byte_counter] = static_cast<quint8>(file_buffer.at(i));
-            ++byte_counter;
+            blockBuffer[byteCounter] = static_cast<quint8>(fileBuffer.at(i));
+            ++byteCounter;
         }
         else
         {
-            auto encrypt_block = salsa->process_block(block_buffer);
+            auto encrypt_block = salsa->process_block(blockBuffer);
 
-            for (quint32 j = 0; j < byte_counter; ++j)
-                encrypt_file_buffer.append(static_cast<char>(encrypt_block.at(j)));
+            for (quint32 j = 0; j < byteCounter; ++j)
+                encryptFileBuffer.append(static_cast<char>(encrypt_block.at(j)));
 
-            block_buffer.fill(0x0);
-            byte_counter = 0;
+            blockBuffer.fill(0x0);
+            byteCounter = 0;
             --i;
         }
     }
 
-    if (byte_counter != 0)
+    if (byteCounter != 0)
     {
-        auto encrypt_block = salsa->process_block(block_buffer);
+        auto encryptBlock = salsa->process_block(blockBuffer);
 
-        for (quint32 j = 0; j < byte_counter; ++j)
-            encrypt_file_buffer.append(static_cast<char>(encrypt_block.at(j)));
+        for (quint32 j = 0; j < byteCounter; ++j)
+            encryptFileBuffer.append(static_cast<char>(encryptBlock.at(j)));
     }
 
-    json_file.resize(0);
-    json_file.write(encrypt_file_buffer);
-    json_file.close();
+    jsonFile.resize(0);
+    jsonFile.write(encryptFileBuffer);
+    jsonFile.close();
     return true;
 }
 
-bool data_model_controller::load(salsa20 *salsa)
+bool dataModelController::load(QSharedPointer<salsa20> salsa)
 {
-    QByteArray file_buffer;
+    QByteArray fileBuffer;
     auto fileName = m_path + m_fileName;
 
     QFile jsFile(fileName);
@@ -134,32 +131,33 @@ bool data_model_controller::load(salsa20 *salsa)
 
     if (!salsa)
     {
-        file_buffer = jsFile.readAll();
+        fileBuffer = jsFile.readAll();
     }
     else
     {
         salsa->begin_crypt();
-        std::ifstream input_file(fileName.toStdString());
-        salsa20::block_array file_block;
+        std::ifstream inputFile(fileName.toStdString());
+        salsa20::block_array fileBlock;
         QByteArray ba;
-        input_file.seekg (0, std::ios::end);
-        uint32_t file_length = static_cast<uint32_t>(input_file.tellg());
-        auto tail_size = file_length % file_block.size();
-        input_file.seekg (0, std::ios::beg);
 
-        while (input_file.good())
+        inputFile.seekg (0, std::ios::end);
+        uint32_t fileLength = static_cast<uint32_t>(inputFile.tellg());
+        auto tailSize = fileLength % fileBlock.size();
+        inputFile.seekg (0, std::ios::beg);
+
+        while (inputFile.good())
         {
             // clear block buffer
-            file_block.fill(0x0);
+            fileBlock.fill(0x0);
 
             // read next data block
-            input_file.read(reinterpret_cast<char *>(&file_block[0]), file_block.size());
+            inputFile.read(reinterpret_cast<char *>(&fileBlock[0]), fileBlock.size());
 
             // encrypt block
-            auto crypt = salsa->process_block(file_block);
+            auto crypt = salsa->process_block(fileBlock);
 
             // copy encrypt data to out file
-            if (input_file.good())
+            if (inputFile.good())
             {
                 for (const auto &v : crypt)
                     ba.append(static_cast<char>(v));
@@ -167,15 +165,15 @@ bool data_model_controller::load(salsa20 *salsa)
             }
             else
             {
-                for (size_t i = 0; i < tail_size; ++i)
+                for (size_t i = 0; i < tailSize; ++i)
                     ba.append(static_cast<char>(crypt.at(i)));
             }
         }
 
-        file_buffer = ba;
+        fileBuffer = ba;
     }
 
-    QJsonDocument jsDoc = QJsonDocument::fromJson(file_buffer);
+    QJsonDocument jsDoc = QJsonDocument::fromJson(fileBuffer);
     jsFile.close();
 
     if(!jsDoc.isObject())
@@ -193,7 +191,7 @@ bool data_model_controller::load(salsa20 *salsa)
     return true;
 }
 
-bool data_model_controller::isDataFileAvailable() const
+bool dataModelController::isDataFileAvailable() const
 {
     return QFile::exists(m_path + m_fileName);
 }

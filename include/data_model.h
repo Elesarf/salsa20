@@ -19,28 +19,28 @@
 #include <QVariantMap>
 #include <QAbstractListModel>
 
-class card_model: public QAbstractListModel
+class cardModel: public QAbstractListModel
 {
     Q_OBJECT
 
 public:
 
-    struct card_type
+    struct cardType
     {
-        card_type(){}
-        card_type(const QString &_name, const QString &_login, const QString &_pass) :
+        cardType(){}
+        cardType(const QString &_name, const QString &_login, const QString &_pass) :
             name(_name),
             login(_login),
             pass(_pass)
         {}
 
-        card_type(const QVariantMap &v_map) :
+        cardType(const QVariantMap &v_map) :
             name(v_map["name"].toString()),
             login(v_map["login"].toString()),
             pass(v_map["pass"].toString())
         {}
 
-        card_type(const QJsonObject &j_obj) :
+        cardType(const QJsonObject &j_obj) :
             name(j_obj.value("name").toString()),
             login(j_obj.value("login").toString()),
             pass(j_obj.value("pass").toString())
@@ -71,9 +71,9 @@ public:
         QString pass;
     };
 
-    using CardList = QList<card_type>;
+    using CardList = QList<cardType>;
 
-    explicit card_model(QObject *parent = nullptr);
+    explicit cardModel(QObject *parent = nullptr);
 
     enum logMessageRoles{
         CardName = Qt::UserRole + 1,
@@ -90,7 +90,7 @@ public:
 
     Q_INVOKABLE void add();
     Q_INVOKABLE void clear();
-    Q_INVOKABLE QList<card_type> rawData() const;
+    Q_INVOKABLE QList<cardType> rawData() const;
 
     bool fromVariantList(const QVariantList &list);
     QVariantList toVariantList() const;

@@ -14,11 +14,9 @@
 #include "data_model.h"
 #include <QDebug>
 
-card_model::card_model(QObject *parent) : QAbstractListModel(parent)
-{
-}
+cardModel::cardModel(QObject *parent) : QAbstractListModel(parent) {}
 
-int card_model::rowCount(const QModelIndex &parent) const
+int cardModel::rowCount(const QModelIndex &parent) const
 {
     if(parent.isValid())
         return 0;
@@ -26,7 +24,7 @@ int card_model::rowCount(const QModelIndex &parent) const
     return m_data.size();
 }
 
-QVariant card_model::data(const QModelIndex &index, int role) const
+QVariant cardModel::data(const QModelIndex &index, int role) const
 {
     if(!index.isValid() || index.row() > m_data.size())
         return QVariant();
@@ -46,7 +44,7 @@ QVariant card_model::data(const QModelIndex &index, int role) const
     }
 }
 
-QHash<int, QByteArray> card_model::roleNames() const
+QHash<int, QByteArray> cardModel::roleNames() const
 {
     return
     {
@@ -56,7 +54,7 @@ QHash<int, QByteArray> card_model::roleNames() const
     };
 }
 
-bool card_model::setData(const QModelIndex &index, const QVariant &value, int role)
+bool cardModel::setData(const QModelIndex &index, const QVariant &value, int role)
 {
     if (index.row() > m_data.size())
         return false;
@@ -80,7 +78,7 @@ bool card_model::setData(const QModelIndex &index, const QVariant &value, int ro
     return true;
 }
 
-bool card_model::removeRows(int row, int count, const QModelIndex &parent)
+bool cardModel::removeRows(int row, int count, const QModelIndex &parent)
 {
     beginRemoveRows(parent, row, row + count - 1);
     for (int i = (row + count - 1); i >= row; i-- )
@@ -89,46 +87,46 @@ bool card_model::removeRows(int row, int count, const QModelIndex &parent)
     return true;
 }
 
-bool card_model::insertRows(int row, int count, const QModelIndex &parent)
+bool cardModel::insertRows(int row, int count, const QModelIndex &parent)
 {
     beginInsertRows(parent, row, row + count - 1);
     for ( int i = row; i < (row + count - 1); i++ )
-        m_data.append({"", "", ""});
+        m_data.append(cardType{"Name", "Login", "Password"});
     endInsertRows();
     return true;
 }
 
-void card_model::add()
+void cardModel::add()
 {
     beginInsertRows(QModelIndex(), m_data.size(), m_data.size());
-    m_data.append(card_type({"Name","Login","Password"}));
+    m_data.append(cardType{"Name", "Login", "Password"});
     endInsertRows();
 }
 
-void card_model::clear()
+void cardModel::clear()
 {
     beginResetModel();
     m_data.clear();
     endResetModel();
 }
 
-QList<card_model::card_type> card_model::rawData() const
+QList<cardModel::cardType> cardModel::rawData() const
 {
     return m_data;
 }
 
-bool card_model::fromVariantList(const QVariantList &list)
+bool cardModel::fromVariantList(const QVariantList &list)
 {
     beginResetModel();
 
     for (const auto &item : list)
-        m_data.append(card_type(item.toMap()));
+        m_data.append(cardType(item.toMap()));
 
     endResetModel();
     return true;
 }
 
-QVariantList card_model::toVariantList() const
+QVariantList cardModel::toVariantList() const
 {
     QVariantList list;
 
