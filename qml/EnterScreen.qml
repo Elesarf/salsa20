@@ -107,9 +107,9 @@ Item{
                     }
 
                     onClicked: {
+                        masterPassInput.focus = false
                         model.setMasterPassword(masterPassInput.text)
                         model.load()
-                        masterPassInput.focus = false
 
                         unlockPopup.close()
                         openStorage()

@@ -78,7 +78,6 @@ void view_model::setMasterPassword(QString masterPassword)
     m_masterPassword = masterPassword;
 
     m_salsa = std::make_shared<salsa20>(masterPassword.toStdString(), c_nonce);
-    qDebug() << "master pass: " << masterPassword;
 
     emit masterPasswordChanged(m_masterPassword);
 }

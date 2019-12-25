@@ -4,7 +4,6 @@ import QtQuick.Layouts 1.3
 
 ListView{
     id: cardList
-    width: parent.width
     spacing: dp(8)
     clip: true
     Layout.alignment: Qt.AlignCenter
@@ -47,7 +46,6 @@ ListView{
             anchors.bottom: parent.bottom
             anchors.bottomMargin: dp(16)
 
-
             Rectangle{
                 width: dp(2)
                 height: dp(30)
@@ -55,7 +53,7 @@ ListView{
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.horizontalCenter: parent.horizontalCenter
 
-                border.width: dp()
+                border.width: dp(2)
                 border.color: "black"
             }
 

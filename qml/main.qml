@@ -40,12 +40,17 @@ ApplicationWindow {
             model: viewModel
 
             onClose: mainWindow.close()
-            onOpenStorage: stack.currentIndex = (++stack.currentIndex) % stack.count
+            onOpenStorage:{
+                stack.currentIndex = (++stack.currentIndex) % stack.count
+                cardList.enabled = true
+            }
         }
 
         CardList{
             id: cardList
             width: parent.width
+            height: parent.height
+            enabled: false
 
             model: viewModel.cardController.modelData
         }
