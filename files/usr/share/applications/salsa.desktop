@@ -1,0 +1,6 @@
+[Desktop Entry]
+Name=salsa
+Exec=salsa
+Icon=salsa.png
+Type=Application
+Categories=GNOME;GTK;Utility;
