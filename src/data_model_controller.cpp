@@ -24,7 +24,7 @@ dataModelController::dataModelController(QObject *parent) : QObject(parent),
     m_model(new cardModel()),
     m_path(QStandardPaths::writableLocation(QStandardPaths::ConfigLocation) + "/sc/"),
     m_backupPath(m_path + "bak/"),
-    m_fileName("data.json")
+    m_fileName("data.cok")
 {}
 
 int dataModelController::size() const
