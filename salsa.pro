@@ -36,6 +36,11 @@ RESOURCES += qml/qml_resources.qrc
 
 INCLUDEPATH += ./include
 
+build.target = version_build
+build.commands = python3 $$PWD/build_number.py -p && $$PWD/manifest_build_number.sh $$PWD
+PRE_TARGETDEPS += version_build
+QMAKE_EXTRA_TARGETS += build
+
 android: \
 {
     DISTFILES += \
