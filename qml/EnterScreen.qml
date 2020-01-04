@@ -21,6 +21,8 @@ Item{
         bad.start()
     }
 
+    Component.onCompleted: masterPassInput.focus = true
+
     Rectangle{
         id: unlockScreen
 

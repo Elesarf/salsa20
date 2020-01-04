@@ -14,6 +14,7 @@
 #include <QStandardPaths>
 #include <QVector>
 #include <QDebug>
+#include <QUrl>
 #include <fstream>
 
 #include "salsa20.h"
@@ -200,4 +201,42 @@ bool dataModelController::backup() const
     auto timestamp = QString::number(QDateTime::currentMSecsSinceEpoch());
 
     return QFile::copy(m_path + m_fileName, m_backupPath + m_fileName + "." + timestamp);
+}
+
+#ifdef ANDROID
+#include <QtAndroidExtras/QtAndroid>
+static bool check_permission() {
+    QtAndroid::PermissionResult r = QtAndroid::checkPermission("android.permission.WRITE_EXTERNAL_STORAGE");
+    if(r == QtAndroid::PermissionResult::Denied) {
+        QtAndroid::requestPermissionsSync( QStringList() << "android.permission.WRITE_EXTERNAL_STORAGE" );
+        r = QtAndroid::checkPermission("android.permission.WRITE_EXTERNAL_STORAGE");
+        if(r == QtAndroid::PermissionResult::Denied) {
+            qDebug() << "Permission denied";
+            return false;
+        }
+    }
+
+    qDebug() << "Permissions granted!";
+    return true;
+}
+#endif
+
+bool dataModelController::exportData(const QUrl &exportPath) const
+{
+    if (exportPath.isEmpty())
+        return false;
+
+    if (!QFile::exists(m_path + m_fileName))
+        return false;
+
+    QDir d(exportPath.path());
+    if (!d.exists())
+        d.mkpath(exportPath.path());
+
+#ifdef ANDROID
+    check_permission();
+#endif
+
+    auto res = QFile::copy(m_path + m_fileName, exportPath.path() + "/" + m_fileName);
+    return res;
 }

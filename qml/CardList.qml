@@ -1,11 +1,16 @@
 import QtQuick 2.5
 import QtQuick.Controls 2.0
+import QtQuick.Dialogs 1.2
 import QtQuick.Layouts 1.3
+import Qt.labs.platform 1.0
 
 ListView{
     id: cardList
     spacing: dp(8)
     clip: true
+
+    model: parent.model
+
     Layout.alignment: Qt.AlignCenter
     Layout.preferredHeight: height
 
@@ -25,6 +30,32 @@ ListView{
 
             viewModel.save()
             viewModel.load()
+        }
+    }
+
+    headerPositioning: ListView.OverlayHeader
+    header: Rectangle{
+        width: parent.width
+        height: dp(36)
+        z: 2
+
+        color: "transparent"
+
+        Image{
+            id: exportData
+
+            source: "qrc:/media/save_alt-24px.svg"
+            anchors.right: parent.right
+            anchors.rightMargin: dp(28)
+            anchors.verticalCenter: parent.verticalCenter
+
+            MouseArea{
+                anchors.fill: parent
+
+                onClicked: {
+                    swipeView.currentIndex = ++swipeView.currentIndex % swipeView.count
+                }
+            }
         }
     }
 

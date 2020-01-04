@@ -28,6 +28,8 @@ ApplicationWindow {
 
     ViewModel{
         id: viewModel
+
+        Component.onCompleted: cardList.setModel(viewModel.cardController.modelData)
     }
 
     StackLayout{
@@ -46,13 +48,15 @@ ApplicationWindow {
             }
         }
 
-        CardList{
+        CardView{
             id: cardList
             width: parent.width
             height: parent.height
             enabled: false
 
-            model: viewModel.cardController.modelData
+            onFolderSelected:{
+                viewModel.exportData(folder)
+            }
         }
     }
 }

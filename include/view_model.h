@@ -36,6 +36,8 @@ public:
     Q_INVOKABLE void save();
     Q_INVOKABLE bool load();
 
+    Q_INVOKABLE bool exportData(const QUrl &) const;
+
 public slots:
     void setMasterPassword(QString masterPassword);
     void setReadyToWork(bool readyToWork);

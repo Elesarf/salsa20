@@ -33,6 +33,8 @@ public:
     Q_INVOKABLE bool isDataFileAvailable() const;
     Q_INVOKABLE bool backup() const;
 
+    Q_INVOKABLE bool exportData(const QUrl &) const;
+
 signals:
     void sizeChanged(int size);
 

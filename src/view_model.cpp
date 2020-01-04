@@ -58,6 +58,11 @@ bool view_model::load()
     return m_cardModel->load(m_salsa);
 }
 
+bool view_model::exportData(const QUrl &exportPath) const
+{
+    return m_cardModel->exportData(exportPath);
+}
+
 dataModelController *view_model::cardController()
 {
     return m_cardModel;

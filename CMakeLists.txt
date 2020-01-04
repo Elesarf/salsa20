@@ -27,6 +27,8 @@ set(QML_SOURCES
     qml/CardList.qml
     qml/EnterScreen.qml
     qml/PasswordDelegate.qml
+    qml/FilePicker.qml
+    qml/CardView.qml
     )
 
 find_package(Qt5 COMPONENTS Core Qml Quick REQUIRED)

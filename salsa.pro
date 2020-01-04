@@ -1,4 +1,4 @@
-QT += core quick svg
+QT += core quick svg androidextras
 
 CONFIG += c++14
 
@@ -30,11 +30,17 @@ HEADERS += \
 
 OTHER_FILES += \
     qml/main.qml \
-    qml/PasswordDelegate.qml
+    qml/PasswordDelegate.qml \
+    qml/CardList.qml \
+    qml/EnterScreen.qml \
+    qml/CardView.qml \
+    qml/FilePicker.qml
 
 RESOURCES += qml/qml_resources.qrc
 
 INCLUDEPATH += ./include
+
+LIBS += -landroid
 
 build.target = version_build
 build.commands = python3 $$PWD/build_number.py -p && $$PWD/manifest_build_number.sh $$PWD

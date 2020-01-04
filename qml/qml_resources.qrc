@@ -4,6 +4,9 @@
         <file>PasswordDelegate.qml</file>
         <file>EnterScreen.qml</file>
         <file>CardList.qml</file>
+        <file>FilePicker.qml</file>
+        <file>utils.js</file>
+        <file>CardView.qml</file>
     </qresource>
     <qresource prefix="/media">
         <file>visibility-24px.svg</file>
@@ -18,5 +21,8 @@
         <file>close-24px.svg</file>
         <file>owlkey.png</file>
         <file>salsa.png</file>
+        <file>ic_folder_open_black_48dp.png</file>
+        <file>ic_insert_drive_file_black_48dp.png</file>
+        <file>done-24px.svg</file>
     </qresource>
 </RCC>
