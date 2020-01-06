@@ -5,6 +5,11 @@ import QtQuick.Layouts 1.3
 import Qt.labs.platform 1.0
 
 ListView{
+
+    signal exportData()
+    signal importData()
+    signal aboutApp()
+
     id: cardList
     spacing: dp(8)
     clip: true
@@ -42,20 +47,38 @@ ListView{
         color: "transparent"
 
         Image{
-            id: exportData
+            id: importData
 
-            source: "qrc:/media/save_alt-24px.svg"
-            anchors.right: parent.right
-            anchors.rightMargin: dp(28)
+            source: "qrc:/media/ic_file_download_24px.svg"
+            anchors.right: exportDataButton.left
+            anchors.rightMargin: dp(24)
+            anchors.verticalCenter: parent.verticalCenter
+        }
+
+        Image{
+            id: exportDataButton
+
+            source: "qrc:/media/ic_file_upload_24px.svg"
+            anchors.right: aboutApp.left
+            anchors.rightMargin: dp(24)
             anchors.verticalCenter: parent.verticalCenter
 
             MouseArea{
                 anchors.fill: parent
 
                 onClicked: {
-                    swipeView.currentIndex = ++swipeView.currentIndex % swipeView.count
+                    exportData()
                 }
             }
+        }
+
+        Image{
+            id: aboutApp
+
+            source: "qrc:/media/ic_help_24px.svg"
+            anchors.right: parent.right
+            anchors.rightMargin: dp(28)
+            anchors.verticalCenter: parent.verticalCenter
         }
     }
 

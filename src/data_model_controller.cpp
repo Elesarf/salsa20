@@ -203,24 +203,6 @@ bool dataModelController::backup() const
     return QFile::copy(m_path + m_fileName, m_backupPath + m_fileName + "." + timestamp);
 }
 
-#ifdef ANDROID
-#include <QtAndroidExtras/QtAndroid>
-static bool check_permission() {
-    QtAndroid::PermissionResult r = QtAndroid::checkPermission("android.permission.WRITE_EXTERNAL_STORAGE");
-    if(r == QtAndroid::PermissionResult::Denied) {
-        QtAndroid::requestPermissionsSync( QStringList() << "android.permission.WRITE_EXTERNAL_STORAGE" );
-        r = QtAndroid::checkPermission("android.permission.WRITE_EXTERNAL_STORAGE");
-        if(r == QtAndroid::PermissionResult::Denied) {
-            qDebug() << "Permission denied";
-            return false;
-        }
-    }
-
-    qDebug() << "Permissions granted!";
-    return true;
-}
-#endif
-
 bool dataModelController::exportData(const QUrl &exportPath) const
 {
     if (exportPath.isEmpty())
@@ -232,10 +214,6 @@ bool dataModelController::exportData(const QUrl &exportPath) const
     QDir d(exportPath.path());
     if (!d.exists())
         d.mkpath(exportPath.path());
-
-#ifdef ANDROID
-    check_permission();
-#endif
 
     auto res = QFile::copy(m_path + m_fileName, exportPath.path() + "/" + m_fileName);
     return res;

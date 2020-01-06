@@ -20,6 +20,8 @@ Item{
 
         CardList{
             id: cardList
+
+            onExportData: swipeView.currentIndex = ++swipeView.currentIndex % swipeView.count
         }
 
         FilePicker {

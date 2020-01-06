@@ -24,5 +24,11 @@
         <file>ic_folder_open_black_48dp.png</file>
         <file>ic_insert_drive_file_black_48dp.png</file>
         <file>done-24px.svg</file>
+        <file>archive-24px.svg</file>
+        <file>ic_cloud_download_24px.svg</file>
+        <file>ic_cloud_upload_24px.svg</file>
+        <file>ic_file_download_24px.svg</file>
+        <file>ic_file_upload_24px.svg</file>
+        <file>ic_help_24px.svg</file>
     </qresource>
 </RCC>

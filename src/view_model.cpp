@@ -18,6 +18,10 @@ view_model::view_model(QObject *parent) : QObject(parent),
     m_masterPassword(""),
     m_readyToWork(false)
 {
+#ifdef ANDROID
+    checkPermission();
+#endif
+
     m_cardModel = new dataModelController(this);
 }
 
@@ -102,3 +106,22 @@ void view_model::setFileName(QString fileName)
     m_fileName = fileName;
     emit fileNameChanged(m_fileName);
 }
+
+#ifdef ANDROID
+#include <QtAndroidExtras/QtAndroid>
+bool view_model::checkPermission() {
+    QtAndroid::PermissionResult r = QtAndroid::checkPermission("android.permission.WRITE_EXTERNAL_STORAGE");
+    if(r == QtAndroid::PermissionResult::Denied) {
+        QtAndroid::requestPermissionsSync( QStringList() << "android.permission.WRITE_EXTERNAL_STORAGE" );
+        r = QtAndroid::checkPermission("android.permission.WRITE_EXTERNAL_STORAGE");
+        if(r == QtAndroid::PermissionResult::Denied) {
+            qDebug() << "Permission denied";
+            return false;
+        }
+    }
+
+    qDebug() << "Permissions granted!";
+    return true;
+}
+#endif
+

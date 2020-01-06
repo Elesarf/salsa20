@@ -48,6 +48,11 @@ signals:
     void readyToWorkChanged(bool readyToWork);
     void fileNameChanged(QString fileName);
 
+#ifdef ANDROID
+private:
+    bool checkPermission();
+#endif
+
 private:
     QString m_masterPassword;
     bool m_readyToWork;
