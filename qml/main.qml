@@ -57,6 +57,10 @@ ApplicationWindow {
             onFolderSelected:{
                 viewModel.exportData(folder)
             }
+
+            onFileSelected: {
+                viewModel.importData(fileName)
+            }
         }
     }
 }

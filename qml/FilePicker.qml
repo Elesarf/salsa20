@@ -9,14 +9,21 @@ Item {
     signal folderSelected(string path)
     signal back()
 
+    property bool showFiles: false
     property bool showDotAndDotDot: true
     property bool showHidden: false
 	property bool showDirsFirst: true
     property string folder: StandardPaths.writableLocation(StandardPaths.DocumentsLocation)
-	property string nameFilters: "*.*"
+    property string nameFilters: "*.cok"
 
     function clearHistory(){
         folder = StandardPaths.writableLocation(StandardPaths.DocumentsLocation)
+    }
+
+    function isDotOrDotDot(fileName){
+        if (fileName === "." || fileName === "..")
+            return true
+        return false
     }
 
 	function currentFolder() {
@@ -34,10 +41,10 @@ Item {
 	function onItemClick(fileName) {
 
         if(!isFolder(fileName)) {
-			return;
-		}
+            return;
+        }
 
-		if(fileName === ".." && canMoveUp()) {
+        if(fileName === ".." && canMoveUp()) {
             folderListModel.folder = folderListModel.parentFolder
         } else if(fileName !== ".") {
             if(folderListModel.folder.toString() === "file:///") {
@@ -118,6 +125,9 @@ Item {
             }
 
             Rectangle{
+                enabled: !showFiles
+                visible: enabled
+
                 width: dp(60)
                 height: dp(60)
                 radius: dp(30)
@@ -150,7 +160,7 @@ Item {
             Item {
                 height: dp(48)
                 width: parent.width
-                enabled: isFolder(fileNameText.text)
+                enabled: isFolder(fileName) || showFiles
                 visible: enabled
 
                 Rectangle {
@@ -160,7 +170,11 @@ Item {
                     MouseArea {
                         anchors.fill: parent
                         onClicked: {
-                            onItemClick(fileNameText.text)
+                            onItemClick(fileName)
+
+                            if (showFiles && !folderListModel.isFolder(index))
+                                if (!isDotOrDotDot(fileName))
+                                    fileSelected(currentFolder() + "/" + fileName)
                         }
                     }
 
@@ -182,7 +196,7 @@ Item {
 						anchors.left: parent.left
                         anchors.leftMargin: dp(12)
 						anchors.verticalCenter: parent.verticalCenter
-                        source: isFolder(fileNameText.text) ? "qrc:/media/ic_folder_open_black_48dp.png" : ""
+                        source: isFolder(fileName) ? "qrc:/media/ic_folder_open_black_48dp.png" : "qrc:/media/ic_insert_drive_file_black_48dp.png"
 					}
 				}
 			}

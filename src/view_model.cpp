@@ -67,6 +67,11 @@ bool view_model::exportData(const QUrl &exportPath) const
     return m_cardModel->exportData(exportPath);
 }
 
+bool view_model::importData(const QUrl &importFileName)
+{
+    return m_cardModel->importData(importFileName, m_salsa);
+}
+
 dataModelController *view_model::cardController()
 {
     return m_cardModel;

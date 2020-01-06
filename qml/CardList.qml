@@ -47,12 +47,20 @@ ListView{
         color: "transparent"
 
         Image{
-            id: importData
+            id: importDataButton
 
             source: "qrc:/media/ic_file_download_24px.svg"
             anchors.right: exportDataButton.left
             anchors.rightMargin: dp(24)
             anchors.verticalCenter: parent.verticalCenter
+
+            MouseArea{
+                anchors.fill: parent
+
+                onClicked: {
+                    importData()
+                }
+            }
         }
 
         Image{

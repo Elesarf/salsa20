@@ -10,6 +10,7 @@ Item{
     }
 
     signal folderSelected(string folder)
+    signal fileSelected(string fileName)
 
     SwipeView{
         id: swipeView
@@ -21,14 +22,28 @@ Item{
         CardList{
             id: cardList
 
-            onExportData: swipeView.currentIndex = ++swipeView.currentIndex % swipeView.count
+            onExportData:{
+                picker.showFiles = false
+                swipeView.currentIndex = ++swipeView.currentIndex % swipeView.count
+            }
+
+            onImportData: {
+                picker.showFiles = true
+                swipeView.currentIndex = ++swipeView.currentIndex % swipeView.count
+            }
         }
 
         FilePicker {
+            id: picker
             showDotAndDotDot: true
             onFolderSelected: {
                 swipeView.currentIndex = --swipeView.currentIndex % swipeView.count
                 cardView.folderSelected(path)
+            }
+
+            onFileSelected: {
+                swipeView.currentIndex = --swipeView.currentIndex % swipeView.count
+                cardView.fileSelected(fileName)
             }
 
             onBack: swipeView.currentIndex = --swipeView.currentIndex % swipeView.count

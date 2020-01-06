@@ -118,10 +118,60 @@ bool dataModelController::save(QSharedPointer<salsa20> salsa) const
 
 bool dataModelController::load(QSharedPointer<salsa20> salsa)
 {
-    QByteArray fileBuffer;
-    auto fileName = m_path + m_fileName;
+    return internalLoad(m_path + m_fileName, salsa);
+}
 
-    QFile jsFile(fileName);
+bool dataModelController::isDataFileAvailable() const
+{
+    return QFile::exists(m_path + m_fileName);
+}
+
+bool dataModelController::backup() const
+{
+    QDir dir(m_backupPath);
+    if (!dir.exists())
+        dir.mkpath(m_backupPath);
+
+    auto timestamp = QString::number(QDateTime::currentMSecsSinceEpoch());
+
+    return QFile::copy(m_path + m_fileName, m_backupPath + m_fileName + "." + timestamp);
+}
+
+bool dataModelController::exportData(const QUrl &exportPath) const
+{
+    if (exportPath.isEmpty())
+        return false;
+
+    if (!QFile::exists(m_path + m_fileName))
+        return false;
+
+    QDir d(exportPath.path());
+    if (!d.exists())
+        d.mkpath(exportPath.path());
+
+    auto res = QFile::copy(m_path + m_fileName, exportPath.path() + "/" + m_fileName);
+    return res;
+}
+
+bool dataModelController::importData(const QUrl &importFileName, QSharedPointer<salsa20> salsa)
+{
+    if (!salsa)
+        return false;
+
+    if (importFileName.isEmpty())
+        return false;
+
+    if (!internalLoad(importFileName, salsa))
+        return false;
+
+    return save(salsa);
+}
+
+bool dataModelController::internalLoad(const QUrl &fileName, QSharedPointer<salsa20> salsa)
+{
+    QByteArray fileBuffer;
+
+    QFile jsFile(fileName.path());
     if(!jsFile.open(QIODevice::ReadOnly | QIODevice::Text))
         return false;
 
@@ -132,7 +182,7 @@ bool dataModelController::load(QSharedPointer<salsa20> salsa)
     else
     {
         salsa->begin_crypt();
-        std::ifstream inputFile(fileName.toStdString());
+        std::ifstream inputFile(fileName.path().toStdString());
         salsa20::block_array fileBlock;
         QByteArray ba;
 
@@ -183,38 +233,7 @@ bool dataModelController::load(QSharedPointer<salsa20> salsa)
 
     QJsonArray jsArr = jsVal.toArray();
 
+    m_model->clear();
     m_model->fromVariantList(jsArr.toVariantList());
     return true;
-}
-
-bool dataModelController::isDataFileAvailable() const
-{
-    return QFile::exists(m_path + m_fileName);
-}
-
-bool dataModelController::backup() const
-{
-    QDir dir(m_backupPath);
-    if (!dir.exists())
-        dir.mkpath(m_backupPath);
-
-    auto timestamp = QString::number(QDateTime::currentMSecsSinceEpoch());
-
-    return QFile::copy(m_path + m_fileName, m_backupPath + m_fileName + "." + timestamp);
-}
-
-bool dataModelController::exportData(const QUrl &exportPath) const
-{
-    if (exportPath.isEmpty())
-        return false;
-
-    if (!QFile::exists(m_path + m_fileName))
-        return false;
-
-    QDir d(exportPath.path());
-    if (!d.exists())
-        d.mkpath(exportPath.path());
-
-    auto res = QFile::copy(m_path + m_fileName, exportPath.path() + "/" + m_fileName);
-    return res;
 }

@@ -34,7 +34,12 @@ public:
     Q_INVOKABLE bool backup() const;
 
     Q_INVOKABLE bool exportData(const QUrl &) const;
+    Q_INVOKABLE bool importData(const QUrl &, QSharedPointer<salsa20> salsa);
 
+private:
+    bool internalLoad(const QUrl &, QSharedPointer<salsa20> salsa = QSharedPointer<salsa20>(nullptr));
+
+public:
 signals:
     void sizeChanged(int size);
 
