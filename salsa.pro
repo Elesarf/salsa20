@@ -24,6 +24,7 @@ SOURCES += \
 
 HEADERS += \
     include/salsa20.h \
+    include/version.h \
     include/data_model.h \
     include/view_model.h \
     include/data_model_controller.h
@@ -34,6 +35,7 @@ OTHER_FILES += \
     qml/CardList.qml \
     qml/EnterScreen.qml \
     qml/CardView.qml \
+    qml/AboutApp.qml \
     qml/FilePicker.qml
 
 RESOURCES += qml/qml_resources.qrc
@@ -43,7 +45,7 @@ INCLUDEPATH += ./include
 LIBS += -landroid
 
 build.target = version_build
-build.commands = python3 $$PWD/build_number.py -p && $$PWD/manifest_build_number.sh $$PWD
+build.commands = python3 $$PWD/build_number.py -p -s && $$PWD/manifest_build_number.sh $$PWD
 PRE_TARGETDEPS += version_build
 QMAKE_EXTRA_TARGETS += build
 

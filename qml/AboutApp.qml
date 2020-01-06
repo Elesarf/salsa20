@@ -32,6 +32,7 @@ Item {
 
         text: "Salsa build number " + version.versionNumber() + "\r\n" +
               "Created by Alexey Fedchenko aka Elesar, Tver city, Russia.\r\n" +
+              "Ass (all system ara simple) private company\r\n" +
               "email: elesarf@gmail.com"
 
         font.pointSize: 12

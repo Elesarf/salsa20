@@ -67,7 +67,7 @@ target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_14)
 target_include_directories(${PROJECT_NAME} PUBLIC ./include)
 target_include_directories(${PROJECT_NAME} PRIVATE ${QtQml_INCLUDE_DIRECTORY})
 
-add_custom_command(TARGET ${PROJECT_NAME} PRE_BUILD COMMAND python3 ${CMAKE_SOURCE_DIR}/build_number.py -p)
+add_custom_command(TARGET ${PROJECT_NAME} PRE_BUILD COMMAND python3 ${CMAKE_SOURCE_DIR}/build_number.py -p -s)
 file (STRINGS "build_number" BUILD_NUMBER)
 message("build_number = ${BUILD_NUMBER}")
 
