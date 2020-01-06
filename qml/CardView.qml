@@ -19,6 +19,12 @@ Item{
 
         spacing: dp(10)
 
+        Component.onCompleted: swipeView.currentIndex = ++swipeView.currentIndex % swipeView.count
+
+        AboutApp{
+            onBack: swipeView.currentIndex = ++swipeView.currentIndex % swipeView.count
+        }
+
         CardList{
             id: cardList
 
@@ -31,6 +37,8 @@ Item{
                 picker.showFiles = true
                 swipeView.currentIndex = ++swipeView.currentIndex % swipeView.count
             }
+
+            onAboutApp: swipeView.currentIndex = --swipeView.currentIndex % swipeView.count
         }
 
         FilePicker {

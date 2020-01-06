@@ -5,3 +5,5 @@ build_number
 salsa.pro.user
 
 android/AndroidManifest.xml
+
+build_number.h

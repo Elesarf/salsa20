@@ -149,6 +149,9 @@ bool dataModelController::exportData(const QUrl &exportPath) const
     if (!d.exists())
         d.mkpath(exportPath.path());
 
+    if (QFile::exists(exportPath.path() + "/" + m_fileName))
+        QFile::remove(exportPath.path() + "/" + m_fileName);
+
     auto res = QFile::copy(m_path + m_fileName, exportPath.path() + "/" + m_fileName);
     return res;
 }

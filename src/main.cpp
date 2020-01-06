@@ -3,8 +3,8 @@
 #include <QQmlApplicationEngine>
 
 #include "data_model_controller.h"
-
 #include "view_model.h"
+#include "version.h"
 
 int main(int argc, char **argv)
 {
@@ -15,6 +15,7 @@ int main(int argc, char **argv)
 
     qmlRegisterType<dataModelController>("com.ass.crypter", 1, 0, "CardController");
     qmlRegisterType<view_model>("com.ass.crypter", 1, 0, "ViewModel");
+    qmlRegisterType<Version>("com.ass.crypter", 1, 0, "Version");
 
     engine.load(QUrl("qrc:/main.qml"));
 

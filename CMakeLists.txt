@@ -16,6 +16,7 @@ set(SOURCES
     )
 
 set(HEADERS
+    include/version.h
     include/salsa20.h
     include/data_model.h
     include/view_model.h
@@ -29,6 +30,7 @@ set(QML_SOURCES
     qml/PasswordDelegate.qml
     qml/FilePicker.qml
     qml/CardView.qml
+    qml/AboutApp.qml
     )
 
 find_package(Qt5 COMPONENTS Core Qml Quick REQUIRED)

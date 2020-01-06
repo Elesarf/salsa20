@@ -67,7 +67,7 @@ ListView{
             id: exportDataButton
 
             source: "qrc:/media/ic_file_upload_24px.svg"
-            anchors.right: aboutApp.left
+            anchors.right: aboutAppButton.left
             anchors.rightMargin: dp(24)
             anchors.verticalCenter: parent.verticalCenter
 
@@ -81,12 +81,20 @@ ListView{
         }
 
         Image{
-            id: aboutApp
+            id: aboutAppButton
 
             source: "qrc:/media/ic_help_24px.svg"
             anchors.right: parent.right
             anchors.rightMargin: dp(28)
             anchors.verticalCenter: parent.verticalCenter
+
+            MouseArea{
+                anchors.fill: parent
+
+                onClicked: {
+                    aboutApp()
+                }
+            }
         }
     }
 
