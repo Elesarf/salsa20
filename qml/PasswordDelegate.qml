@@ -89,7 +89,6 @@ Item {
                         text: "Remove"
                         onTriggered: removeThis()
                     }
-
                 }
             }
         }

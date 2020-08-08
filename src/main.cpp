@@ -11,7 +11,7 @@ int main(int argc, char **argv)
     QGuiApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     QGuiApplication app(argc, argv);
     QQmlApplicationEngine engine;
-    app.setWindowIcon(QIcon(":/media/salsa.png"));
+    app.setWindowIcon(QIcon(":/media/salsa_256.png"));
 
     qmlRegisterType<dataModelController>("com.ass.crypter", 1, 0, "CardController");
     qmlRegisterType<view_model>("com.ass.crypter", 1, 0, "ViewModel");

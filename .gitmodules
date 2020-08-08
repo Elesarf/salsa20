@@ -1,0 +1,3 @@
+[submodule "QtAndroidTools"]
+	path = QtAndroidTools
+	url = git@github.com:FalsinSoft/QtAndroidTools.git

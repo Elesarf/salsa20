@@ -19,7 +19,7 @@ ListView{
     Layout.alignment: Qt.AlignCenter
     Layout.preferredHeight: height
 
-    delegate: PasswordDelegate{
+    delegate: PasswordDelegate {
         width: parent.width
         height: dp(100)
 

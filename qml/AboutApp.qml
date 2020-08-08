@@ -14,7 +14,7 @@ Item {
         id: owl
         width: dp(240)
         height: dp(150)
-        source: "qrc:/media/owlkey.png"
+        source: "qrc:/media/salsa_512.png"
 
         anchors.top: parent.top
         anchors.topMargin: dp(36)
@@ -29,13 +29,15 @@ Item {
 
         anchors.top: owl.bottom
         anchors.topMargin: dp(36)
+        anchors.horizontalCenter: parent.horizontalCenter
 
         text: "Salsa build number " + version.versionNumber() + "\r\n" +
-              "Created by Alexey Fedchenko aka Elesar, Tver city, Russia.\r\n" +
-              "Ass (all system ara simple) private company\r\n" +
+              "Created by Alexey Fedchenko aka Elesar\r\n" +
+              "Tver city, Russia\r\n" +
+              "Ass (all system are simple) private company\r\n" +
               "email: elesarf@gmail.com"
 
-        font.pointSize: 12
+        font.pointSize: 14
         color: "#ffffff"
         horizontalAlignment: Text.AlignHCenter
 

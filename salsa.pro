@@ -8,7 +8,7 @@ TARGET = salsa20
 # depend on your compiler). Refer to the documentation for the
 # deprecated API to know how to port your code away from it.
 DEFINES += QT_DEPRECATED_WARNINGS
-QML_IMPORT_PATH += /home/elesar/Develop/Qt/5.13.1/android_armv7/
+QML_IMPORT_PATH += /home/ompwork//Qt/5.12.5/android_armv7/
 
 # You can also make your code fail to compile if it uses deprecated APIs.
 # In order to do so, uncomment the following line.
